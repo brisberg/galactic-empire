@@ -1,6 +1,5 @@
 import {Fleet} from 'models/fleet';
-import {Allegience, Planet, TechLevel} from 'models/planet';
-import {Position} from 'models/position';
+import {Allegience, Planet} from 'models/planet';
 
 /**
  * @fileoverview
@@ -13,20 +12,15 @@ export class Game {
   private planets: Map<string, Planet> = new Map();
   private fleet: Fleet;
 
-  constructor() {
+  constructor(stardate: number, planets: Planet[]) {
+    this._stardate = stardate;
+
+    planets.forEach((planet: Planet) => {
+      this.registerPlanet(planet);
+    });
+
     // TODO: Initialize the player fleet from initial fleet definition
     this.fleet = new Fleet();
-
-    // TODO: Initialize Planets
-    this.registerPlanet(new Planet(
-        'alpha', new Position(0, 0), Allegience.EMPIRE, TechLevel.ADVANCED,
-        50.5));
-    this.registerPlanet(new Planet(
-        'beta', new Position(5, 0), Allegience.INDEPENDENT, TechLevel.LIMITED,
-        70.5));
-    this.registerPlanet(new Planet(
-        'gamma', new Position(0, 5), Allegience.INDEPENDENT, TechLevel.SUPERIOR,
-        25.5));
   }
 
   /** The current Stardate */
@@ -34,10 +28,46 @@ export class Game {
     return this._stardate;
   }
 
-  /** Advances the simulation by the given number of Stardates. */
-  public update(deltatime: number): void {
+  /**
+   * Advances the simulation by the given number of Stardates.
+   *
+   * Returns true/false is the game ends in a Victory or Defeat.
+   * Returns void otherwise.
+   */
+  public update(deltatime: number): boolean|void {
     this._stardate += deltatime;
+
+    if (this.checkLossCondition()) {
+      // Game Over
+      return false;
+    }
+
+    if (this.checkWinCondition()) {
+      // Game Win
+      return true;
+    }
+
     return;
+  }
+
+  /** Returns true if the player has won */
+  private checkWinCondition(): boolean {
+    let galaxyConqured = true;
+    this.planets.forEach((planet: Planet) => {
+      if (planet.allegience === Allegience.INDEPENDENT) {
+        galaxyConqured = false;
+      }
+    });
+
+    return galaxyConqured;
+  }
+
+  /** Returns true if the player has lost */
+  private checkLossCondition(): boolean {
+    if (this.stardate > 1200) {
+      return true;
+    }
+    return false;
   }
 
   /** Registers a Planet into the Planets map */
