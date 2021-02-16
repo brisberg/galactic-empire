@@ -4,8 +4,8 @@
  * the player and planets can have in their fleets.
  */
 
-/** Vessel enum represents the various types of ships that exist */
-export enum Vessel {
+/** Vessle enum represents the various types of ships that exist */
+export enum Vessle {
   FIGHTER = 'fighter',
   M_TRANSPORT = 'manned-transport',
 }

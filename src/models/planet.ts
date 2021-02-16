@@ -5,7 +5,7 @@
  */
 
 import {Position} from './position';
-import {Vessel} from './ship';
+import {Vessle} from './ship';
 
 /**
  * Planet class represents a planet in the galaxy. The Planet includes all the
@@ -14,7 +14,7 @@ import {Vessel} from './ship';
  */
 export class Planet {
   private resources: Map<Resource, number> = new Map();
-  private fleet: Map<Vessel, number> = new Map();
+  private fleet: Map<Vessle, number> = new Map();
   /** Mapping of Resource generating industry to an allocation percentage */
   private industry: Map<Resource, number> = new Map();
 
@@ -26,6 +26,16 @@ export class Planet {
       /** Planet population (in millions) */
       public population: number,
   ) {}
+
+  /** Returns the current amount of the given Resource on this Planet */
+  getResource(resource: Resource): number {
+    return this.resources.get(resource) || 0;
+  }
+
+  /** Returns the number of the given vessle  */
+  getFleet(ship: Vessle): number {
+    return this.fleet.get(ship) || 0;
+  }
 }
 
 /** Allegience represents the political state of a planet. */
