@@ -36,6 +36,10 @@ export class Planet {
   getFleet(ship: Vessle): number {
     return this.fleet.get(ship) || 0;
   }
+
+  update(deltatime: number): void {
+    return;
+  }
 }
 
 /** Allegience represents the political state of a planet. */

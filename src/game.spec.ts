@@ -24,6 +24,13 @@ function occupiedPlanet(name: string): Planet {
       name, new Position(0, 0), Allegience.OCCUPIED, TechLevel.ADVANCED, 10);
 }
 
+function mockPlanet(name: string): Planet {
+  const planet = new Planet(
+      name, new Position(0, 0), Allegience.EMPIRE, TechLevel.ADVANCED, 10);
+  jest.spyOn(planet, 'update');
+  return planet;
+}
+
 describe('Game', () => {
   let game: Game;
 
@@ -45,7 +52,30 @@ describe('Game', () => {
     expect(game.stardate).toEqual(initialDate + 5);
   });
 
-  it.todo('should update all planets when time advances to the next Stardate');
+  describe('with mock planets', () => {
+    let planets: Planet[];
+
+    beforeEach(() => {
+      planets = [mockPlanet('alpha'), mockPlanet('beta')];
+      game = new Game(0, planets);
+    });
+
+    it('should update all planets when time advances to next Stardate', () => {
+      game.update(5);
+
+      planets.forEach((planet: Planet) => {
+        expect(planet.update).toHaveBeenCalledWith(5);
+      });
+    });
+
+    it('should not update planets for fractional Stardates', () => {
+      game.update(0.5);
+
+      planets.forEach((planet: Planet) => {
+        expect(planet.update).not.toHaveBeenCalled();
+      });
+    });
+  });
 
   it('should end in a loss when Star Date passes 1200', () => {
     const result = game.update(1201);

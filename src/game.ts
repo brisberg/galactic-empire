@@ -35,7 +35,16 @@ export class Game {
    * Returns void otherwise.
    */
   public update(deltatime: number): boolean|void {
+    const initialStardate = Math.floor(this._stardate);
     this._stardate += deltatime;
+    const newStardate = Math.floor(this._stardate);
+
+    // Update all planets
+    if (newStardate - initialStardate > 0) {
+      this.planets.forEach((planet: Planet) => {
+        planet.update(newStardate - initialStardate);
+      });
+    }
 
     if (this.checkLossCondition()) {
       // Game Over
