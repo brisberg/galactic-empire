@@ -1,19 +1,29 @@
+import {Game} from 'game';
+
 describe('Game', () => {
-  it.todo('should move the fleet when commanded');
+  let game: Game;
 
-  it.todo('should attack a planet');
+  beforeEach(() => {
+    game = new Game();
+  });
 
-  it.todo('should gather resources');
+  it('should initialize at Stardate 0', () => {
+    expect(game.stardate).toEqual(0);
+  });
 
-  it.todo('should fill transports');
+  it.todo('should initialize with 19 independent planets and one home');
 
-  it.todo('should unload transports');
+  it('should advance the Stardate when update is called', () => {
+    const initialDate = game.stardate;
 
-  it.todo('should wait in statis');
+    game.update(5);
 
-  it.todo('should re-allocate a planet');
+    expect(game.stardate).toEqual(initialDate + 5);
+  });
 
-  it.todo('should build ships');
+  it.todo('should update all planets when time advances to the next Stardate');
 
-  it.todo('should send spy satelites');
+  it.todo('should end in a loss when Star Date passes 1200');
+
+  it.todo('should end in victory when all planets are Occupied or Empire');
 });
