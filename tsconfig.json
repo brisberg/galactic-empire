@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "CommonJs",
+    "lib": [
+      "ES2018"
+    ],
+    "target": "ES2018",
+    "moduleResolution": "Node",
+    "outDir": "lib",
+    "baseUrl": "src/",
+    "sourceMap": true,
+    "declaration": true,
+    "strict": true,
+    "allowUnreachableCode": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": false,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noImplicitReturns": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
