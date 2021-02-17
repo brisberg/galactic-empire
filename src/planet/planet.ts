@@ -37,6 +37,7 @@ export class Planet {
     return this.fleet.get(ship) || 0;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(deltatime: number): void {
     return;
   }
