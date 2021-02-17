@@ -1,6 +1,6 @@
 import {Game} from 'game/game';
-import {Allegience, Planet, TechLevel} from 'models/planet';
 import {Position} from 'models/position';
+import {Allegience, Planet, TechLevel} from 'planet/planet';
 
 // const planets = [
 //   new Planet(

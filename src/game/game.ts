@@ -1,5 +1,5 @@
 import {Fleet} from 'models/fleet';
-import {Allegience, Planet} from 'models/planet';
+import {Allegience, Planet} from 'planet/planet';
 
 /**
  * @fileoverview
