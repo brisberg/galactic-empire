@@ -4,7 +4,7 @@
  * Planets.
  */
 
-import {Vessle} from '../models/ship';
+import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 
 /**

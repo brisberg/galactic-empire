@@ -1,4 +1,4 @@
-import {Fleet} from 'models/fleet';
+import {Fleet} from 'fleet/fleet';
 import {Allegience, Planet} from 'planet/planet';
 
 /**
