@@ -27,6 +27,11 @@ export class Planet {
       public population: number,
   ) {}
 
+  /** Calculate the pythagorean distance to another planet. */
+  distanceTo(planet: Planet): number {
+    return this.position.distanceTo(planet.position);
+  }
+
   /** Returns the current amount of the given Resource on this Planet */
   getResource(resource: Resource): number {
     return this.resources.get(resource) || 0;

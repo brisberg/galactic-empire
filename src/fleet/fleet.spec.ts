@@ -1,11 +1,18 @@
+import {FUEL_COST, SUPPLY_COST} from '../data/travelCosts';
+import {Planet} from '../planet/planet';
+import {PlanetBuilder} from '../planet/planet.mock';
+import {Position} from '../position/position';
+
 import {Fleet, NotEnoughShipsError} from './fleet';
 import {Vessle} from './ship';
 
 describe('Fleet', () => {
   let fleet: Fleet;
+  let planet: Planet;
 
   beforeEach(() => {
-    fleet = new Fleet();
+    planet = new PlanetBuilder().atPosition(new Position(0, 0)).build();
+    fleet = new Fleet(planet);
   });
 
   it('should initialize with no ships', () => {
@@ -41,7 +48,7 @@ describe('Fleet', () => {
     let sourceFleet: Fleet;
 
     beforeEach(() => {
-      sourceFleet = new Fleet();
+      sourceFleet = new Fleet(planet);
     });
 
     it('should transfer ships to another fleet', () => {
@@ -62,7 +69,28 @@ describe('Fleet', () => {
   });
 
   describe('Travel', () => {
-    it.todo('should calculate supply and fuel costs of travel');
+    let destination: Planet;
+
+    beforeEach(() => {
+      destination = new PlanetBuilder().atPosition(new Position(10, 0)).build();
+      fleet.addShips(Vessle.FIGHTER, 100);
+      fleet.addShips(Vessle.M_TRANSPORT, 150);
+    });
+
+    it('should calculate supply and fuel costs of travel', () => {
+      const fighterSupplyCost = 100 * SUPPLY_COST[Vessle.FIGHTER];
+      const fighterFuelCost = 100 * FUEL_COST[Vessle.FIGHTER];
+      const transportSupplyCost = 150 * SUPPLY_COST[Vessle.M_TRANSPORT];
+      const transportFuelCost = 150 * FUEL_COST[Vessle.M_TRANSPORT];
+      const distance = planet.distanceTo(destination);
+
+      const expectedSupplyCost =
+          (fighterSupplyCost + transportSupplyCost) * distance;
+      const expectedFuelCost = (fighterFuelCost + transportFuelCost) * distance;
+
+      expect(fleet.calcSupplyCostTo(destination)).toEqual(expectedSupplyCost);
+      expect(fleet.calcFuelCostTo(destination)).toEqual(expectedFuelCost);
+    });
 
     it.todo('should deduct supplies and fuel on travel');
 

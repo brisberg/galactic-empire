@@ -1,3 +1,5 @@
+import {FUEL_COST, SUPPLY_COST} from 'data/travelCosts';
+import {Planet} from 'planet/planet';
 import {Vessle} from './ship';
 
 /**
@@ -7,7 +9,15 @@ import {Vessle} from './ship';
  * possess a defence fleet. Fleets can fight each other for control of a system.
  * */
 export class Fleet {
+  private location: Planet;
+  private state: FleetState = FleetState.ORBIT;
+  /** Fleet is in statis till this Stardate */
+  private stasisTill = 0;
   private ships: Map<Vessle, number> = new Map();
+
+  constructor(planet: Planet) {
+    this.location = planet;
+  }
 
   /** Return an object representing all ships in the fleet. */
   getShips(): {[ship: string]: number} {
@@ -45,6 +55,40 @@ export class Fleet {
     dest.addShips(ship, count);
     return;
   }
+
+  /**
+   * Calculates the amount of supplies required to move the fleet to the
+   * destination.
+   */
+  calcSupplyCostTo(dest: Planet): number {
+    let cost = 0;
+    this.ships.forEach((count: number, ship: Vessle) => {
+      cost += count * SUPPLY_COST[ship];
+    });
+    return cost * this.location.distanceTo(dest);
+  }
+
+  /**
+   * Calculates the amount of fuel required to move the fleet to the
+   * destination.
+   */
+  calcFuelCostTo(dest: Planet): number {
+    let cost = 0;
+    this.ships.forEach((count: number, ship: Vessle) => {
+      cost += count * FUEL_COST[ship];
+    });
+    return cost * this.location.distanceTo(dest);
+  }
+}
+
+/** Possible States a Fleet can be in */
+export enum FleetState {
+  /** Assigned to defend or occupy a planet. */
+  DEFENCE = 'defence',
+  /** Asigned to orbit a Planet. May be re-deployed */
+  ORBIT = 'orbit',
+  /** Currently in transit to another star system */
+  TRANSIT = 'transit',
 }
 
 /** Error for attempting to remove more ships than the fleet posesses. */

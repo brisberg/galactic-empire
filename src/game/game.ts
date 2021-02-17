@@ -20,7 +20,7 @@ export class Game {
     });
 
     // TODO: Initialize the player fleet from initial fleet definition
-    this.fleet = new Fleet();
+    this.fleet = new Fleet(planets[0]);
   }
 
   /** The current Stardate */
