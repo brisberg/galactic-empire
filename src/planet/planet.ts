@@ -4,8 +4,8 @@
  * Planets.
  */
 
-import {Position} from '../models/position';
 import {Vessle} from '../models/ship';
+import {Position} from '../position/position';
 
 /**
  * Planet class represents a planet in the galaxy. The Planet includes all the

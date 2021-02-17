@@ -4,7 +4,7 @@
  * other modules.
  */
 
-import {Position} from 'models/position';
+import {Position} from 'position/position';
 import {Allegience, Planet, TechLevel} from './planet';
 
 export class PlanetBuilder {
