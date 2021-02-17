@@ -23,4 +23,27 @@ export class Fleet {
     this.ships.set(ship, (this.ships.get(ship) || 0) + count);
     return;
   }
+
+  /**
+   * Removes the given number of ships to the fleet.
+   * Throws an error if the fleet does not have enough ships.
+   */
+  removeShips(ship: Vessle, count: number): void {
+    const haveShips = this.ships.get(ship) || 0;
+    if ((haveShips - count) < 0) {
+      throw new NotEnoughShipsError(ship, count, haveShips);
+    }
+    this.ships.set(ship, haveShips - count);
+    return;
+  }
+}
+
+/** Error for attempting to remove more ships than the fleet posesses. */
+export class NotEnoughShipsError extends Error {
+  constructor(
+      public readonly ship: Vessle, public readonly removed: number,
+      public readonly have: number) {
+    super(`Cannot remove ${removed} '${ship}'. Fleet only possesses ${have}.`);
+    this.name = 'NotEnoughShipsError';
+  }
 }

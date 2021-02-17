@@ -1,4 +1,4 @@
-import {Fleet} from './fleet';
+import {Fleet, NotEnoughShipsError} from './fleet';
 import {Vessle} from './ship';
 
 describe('Fleet', () => {
@@ -22,7 +22,22 @@ describe('Fleet', () => {
     });
   });
 
-  it.todo('should remove ships');
+  it('should remove ships', () => {
+    fleet.addShips(Vessle.FIGHTER, 10);
+
+    fleet.removeShips(Vessle.FIGHTER, 5);
+
+    expect(fleet.getShips()).toEqual({
+      [Vessle.FIGHTER]: 5,
+    });
+  });
+
+  it('should throw an error when removing more ships than exist', () => {
+    fleet.addShips(Vessle.FIGHTER, 5);
+
+    expect(() => fleet.removeShips(Vessle.FIGHTER, 10))
+        .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 10, 5));
+  });
 
   describe('Travel', () => {
     it.todo('should calculate supply and fuel costs of travel');
