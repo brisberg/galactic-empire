@@ -1,32 +1,23 @@
 import {Game} from 'game/game';
-import {Position} from 'models/position';
-import {Allegience, Planet, TechLevel} from 'planet/planet';
-
-// const planets = [
-//   new Planet(
-//       'alpha', new Position(0, 0), Allegience.EMPIRE,
-//       TechLevel.ADVANCED, 50.5),
-//   new Planet(
-//       'beta', new Position(5, 0), Allegience.INDEPENDENT, TechLevel.LIMITED,
-//       70.5),
-//   new Planet(
-//       'gamma', new Position(0, 5), Allegience.INDEPENDENT,
-//       TechLevel.SUPERIOR, 25.5),
-// ];
+import {Allegience, Planet} from 'planet/planet';
+import {PlanetBuilder} from 'planet/planet.mock';
 
 function empirePlanet(name: string): Planet {
-  return new Planet(
-      name, new Position(0, 0), Allegience.EMPIRE, TechLevel.ADVANCED, 10);
+  return new PlanetBuilder()
+      .withName(name)
+      .withAllegience(Allegience.EMPIRE)
+      .build();
 }
 
 function occupiedPlanet(name: string): Planet {
-  return new Planet(
-      name, new Position(0, 0), Allegience.OCCUPIED, TechLevel.ADVANCED, 10);
+  return new PlanetBuilder()
+      .withName(name)
+      .withAllegience(Allegience.OCCUPIED)
+      .build();
 }
 
 function mockPlanet(name: string): Planet {
-  const planet = new Planet(
-      name, new Position(0, 0), Allegience.EMPIRE, TechLevel.ADVANCED, 10);
+  const planet = new PlanetBuilder().withName(name).build();
   jest.spyOn(planet, 'update');
   return planet;
 }
