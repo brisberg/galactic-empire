@@ -36,6 +36,15 @@ export class Fleet {
     this.ships.set(ship, haveShips - count);
     return;
   }
+
+  /** Transfers the given number of ships to another fleet. */
+  transferTo(ship: Vessle, count: number, dest: Fleet): void {
+    if (dest === this) return;
+
+    this.removeShips(ship, count);
+    dest.addShips(ship, count);
+    return;
+  }
 }
 
 /** Error for attempting to remove more ships than the fleet posesses. */

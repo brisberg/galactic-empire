@@ -12,8 +12,6 @@ describe('Fleet', () => {
     expect(fleet.getShips()).toEqual({});
   });
 
-  it.todo('should transfer ships to another fleet');
-
   it('should add ships', () => {
     fleet.addShips(Vessle.FIGHTER, 10);
 
@@ -37,6 +35,30 @@ describe('Fleet', () => {
 
     expect(() => fleet.removeShips(Vessle.FIGHTER, 10))
         .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 10, 5));
+  });
+
+  describe('Transfer', () => {
+    let sourceFleet: Fleet;
+
+    beforeEach(() => {
+      sourceFleet = new Fleet();
+    });
+
+    it('should transfer ships to another fleet', () => {
+      sourceFleet.addShips(Vessle.FIGHTER, 10);
+
+      sourceFleet.transferTo(Vessle.FIGHTER, 3, fleet);
+
+      expect(fleet.getShips()).toEqual({[Vessle.FIGHTER]: 3});
+      expect(sourceFleet.getShips()).toEqual({[Vessle.FIGHTER]: 7});
+    });
+
+    it('should throw an error when transfering more ships than exist', () => {
+      sourceFleet.addShips(Vessle.FIGHTER, 5);
+
+      expect(() => sourceFleet.transferTo(Vessle.FIGHTER, 15, fleet))
+          .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 15, 5));
+    });
   });
 
   describe('Travel', () => {
