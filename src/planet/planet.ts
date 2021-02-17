@@ -4,6 +4,7 @@
  * Planets.
  */
 
+import {Positionable} from 'position/positionable';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 
@@ -12,7 +13,7 @@ import {Position} from '../position/position';
  * fields needed to define it's state and has some utility functions for
  * manipulating it.
  */
-export class Planet {
+export class Planet extends Positionable {
   private resources: Map<Resource, number> = new Map();
   private fleet: Map<Vessle, number> = new Map();
   /** Mapping of Resource generating industry to an allocation percentage */
@@ -20,16 +21,13 @@ export class Planet {
 
   constructor(
       public name: string,
-      public readonly position: Position,
+      position: Position,
       public allegience: Allegience,
       public readonly techlevel: TechLevel,
       /** Planet population (in millions) */
       public population: number,
-  ) {}
-
-  /** Calculate the pythagorean distance to another planet. */
-  distanceTo(planet: Planet): number {
-    return this.position.distanceTo(planet.position);
+  ) {
+    super(position);
   }
 
   /** Returns the current amount of the given Resource on this Planet */
