@@ -3,7 +3,7 @@ import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
 import {Position} from '../position/position';
 
-import {Fleet, NotEnoughShipsError} from './fleet';
+import {Fleet, InsufficientResourceError, NotEnoughShipsError} from './fleet';
 import {Vessle} from './ship';
 
 describe('Fleet', () => {
@@ -113,9 +113,23 @@ describe('Fleet', () => {
       expect(fleet.fuel).toEqual(10000 - fuelCost);
     });
 
-    it.todo('should refuse to travel without sufficient supplies');
+    it('should refuse to travel without sufficient supplies', () => {
+      fleet.addSupply(0);
+      fleet.addFuel(10000);
+      const supplyCost = fleet.calcSupplyCostTo(destination);
 
-    it.todo('should refuse to travel without sufficient fuel');
+      expect(() => fleet.travelTo(destination))
+          .toThrowError(new InsufficientResourceError('supply', 0, supplyCost));
+    });
+
+    it('should refuse to travel without sufficient fuel', () => {
+      fleet.addSupply(10000);
+      fleet.addFuel(0);
+      const fuelCost = fleet.calcFuelCostTo(destination);
+
+      expect(() => fleet.travelTo(destination))
+          .toThrowError(new InsufficientResourceError('fuel', 0, fuelCost));
+    });
 
     it.todo('should travel to new location after travel time');
   });

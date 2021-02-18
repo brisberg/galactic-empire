@@ -60,6 +60,17 @@ export class Fleet {
 
   /** Moves the fleet to a distant planet */
   travelTo(dest: Planet): void {
+    const supplyCost = this.calcSupplyCostTo(dest);
+    const fuelCost = this.calcFuelCostTo(dest);
+
+    if (this.supplies < supplyCost) {
+      throw new InsufficientResourceError('supply', this.supplies, supplyCost);
+    }
+
+    if (this.fuel < fuelCost) {
+      throw new InsufficientResourceError('fuel', this.fuel, fuelCost);
+    }
+
     this.removeSupply(this.calcSupplyCostTo(dest));
     this.removeFuel(this.calcFuelCostTo(dest));
     this.location = dest;
@@ -150,5 +161,18 @@ export class NotEnoughShipsError extends Error {
   ) {
     super(`Cannot remove ${removed} '${ship}'. Fleet only possesses ${have}.`);
     this.name = 'NotEnoughShipsError';
+  }
+}
+
+/** Error for attempting to travel without enough resources. */
+export class InsufficientResourceError extends Error {
+  constructor(
+      public readonly resource: string,
+      public readonly have: number,
+      public readonly need: number,
+  ) {
+    super(
+        `Insufficient ${resource}. Needs ${need} but fleet only has ${have}.`);
+    this.name = 'InsufficientResourceError';
   }
 }
