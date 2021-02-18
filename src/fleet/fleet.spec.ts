@@ -3,7 +3,13 @@ import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
 import {Position} from '../position/position';
 
-import {Fleet, InsufficientResourceError, NotEnoughShipsError} from './fleet';
+import {
+  Fleet,
+  InsufficientResourceError,
+  InvalidFleetLocationError,
+  NotEnoughShipsError,
+} from './fleet';
+import {FleetBuilder} from './fleet.mock';
 import {Vessle} from './ship';
 
 describe('Fleet', () => {
@@ -12,7 +18,7 @@ describe('Fleet', () => {
 
   beforeEach(() => {
     planet = new PlanetBuilder().atPosition(new Position(0, 0)).build();
-    fleet = new Fleet(planet);
+    fleet = new FleetBuilder().atLocation(planet).build();
   });
 
   it('should initialize with no ships', () => {
@@ -28,7 +34,7 @@ describe('Fleet', () => {
   });
 
   it('should remove ships', () => {
-    fleet.addShips(Vessle.FIGHTER, 10);
+    fleet = new FleetBuilder().withShips(Vessle.FIGHTER, 10).build();
 
     fleet.removeShips(Vessle.FIGHTER, 5);
 
@@ -38,21 +44,18 @@ describe('Fleet', () => {
   });
 
   it('should throw an error when removing more ships than exist', () => {
-    fleet.addShips(Vessle.FIGHTER, 5);
+    fleet = new FleetBuilder().withShips(Vessle.FIGHTER, 5).build();
 
     expect(() => fleet.removeShips(Vessle.FIGHTER, 10))
         .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 10, 5));
   });
 
   describe('Transfer', () => {
-    let sourceFleet: Fleet;
-
-    beforeEach(() => {
-      sourceFleet = new Fleet(planet);
-    });
-
     it('should transfer ships to another fleet', () => {
-      sourceFleet.addShips(Vessle.FIGHTER, 10);
+      const sourceFleet = new FleetBuilder()
+                              .atLocation(planet)
+                              .withShips(Vessle.FIGHTER, 10)
+                              .build();
 
       sourceFleet.transferTo(Vessle.FIGHTER, 3, fleet);
 
@@ -61,10 +64,22 @@ describe('Fleet', () => {
     });
 
     it('should throw an error when transfering more ships than exist', () => {
-      sourceFleet.addShips(Vessle.FIGHTER, 5);
+      const sourceFleet = new FleetBuilder()
+                              .atLocation(planet)
+                              .withShips(Vessle.FIGHTER, 10)
+                              .build();
 
       expect(() => sourceFleet.transferTo(Vessle.FIGHTER, 15, fleet))
-          .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 15, 5));
+          .toThrowError(new NotEnoughShipsError(Vessle.FIGHTER, 15, 10));
+    });
+
+    it('should throw an error if the fleets are on different planets', () => {
+      const otherPlanet = new PlanetBuilder().build();
+      const sourceFleet = new FleetBuilder().atLocation(otherPlanet).build();
+
+      expect(() => sourceFleet.transferTo(Vessle.FIGHTER, 10, fleet))
+          .toThrowError(
+              new InvalidFleetLocationError(sourceFleet.planet, fleet.planet));
     });
   });
 

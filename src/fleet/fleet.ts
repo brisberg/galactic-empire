@@ -53,6 +53,10 @@ export class Fleet {
   transferTo(ship: Vessle, count: number, dest: Fleet): void {
     if (dest === this) return;
 
+    if (this.location !== dest.planet) {
+      throw new InvalidFleetLocationError(this.location, dest.planet);
+    }
+
     this.removeShips(ship, count);
     dest.addShips(ship, count);
     return;
@@ -161,6 +165,17 @@ export class NotEnoughShipsError extends Error {
   ) {
     super(`Cannot remove ${removed} '${ship}'. Fleet only possesses ${have}.`);
     this.name = 'NotEnoughShipsError';
+  }
+}
+
+/** Error for attempting to remove more ships than the fleet posesses. */
+export class InvalidFleetLocationError extends Error {
+  constructor(
+      public readonly sourceLocation: Planet,
+      public readonly destLocation: Planet,
+  ) {
+    super(`Cannot trade between fleets in different locations.`);
+    this.name = 'InvalidFleetLocationError';
   }
 }
 

@@ -4,10 +4,11 @@
  * other modules.
  */
 
-import {Position} from 'position/position';
+import {Position} from '../position/position';
+import {Builder} from '../testing/builder';
 import {Allegience, Planet, TechLevel} from './planet';
 
-export class PlanetBuilder {
+export class PlanetBuilder implements Builder<Planet> {
   private name = 'Galactica';
   private position = new Position(0, 0);
   private allegience = Allegience.EMPIRE;
