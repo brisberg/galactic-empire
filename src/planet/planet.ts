@@ -4,7 +4,7 @@
  * Planets.
  */
 
-import {Resource, ResourceMap} from 'data/industry';
+import {PRODUCTION_RATE, Resource, ResourceMap} from 'data/industry';
 import {Positionable} from 'position/positionable';
 import {StringToNumMapping} from 'types';
 import {Vessle} from '../fleet/ship';
@@ -75,6 +75,15 @@ export class Planet extends Positionable {
   }
 
   update(deltatime: number): void {
+    // Produce resources for all industries
+    this.industry.forEach((alloc: number, res: Resource) => {
+      const activePop = this.population * (alloc / 100);
+      const currentRes = this.resources.get(res) || 0;
+      const resProduced = activePop * PRODUCTION_RATE[res];
+      this.resources.set(res, currentRes + resProduced);
+    });
+
+    // Grow Population
     this.population *= Math.pow(1 + POPULATION_GROWTH_RATE, deltatime);
     return;
   }

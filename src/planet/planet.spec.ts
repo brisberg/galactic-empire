@@ -1,4 +1,4 @@
-import {Resource, ResourceMap} from 'data/industry';
+import {PRODUCTION_RATE, Resource, ResourceMap} from 'data/industry';
 import {Position} from 'position/position';
 import {InvalidIndustryAllocError, POPULATION_GROWTH_RATE} from './planet';
 import {PlanetBuilder} from './planet.mock';
@@ -40,8 +40,8 @@ describe('Planet', () => {
         .toThrowError(new InvalidIndustryAllocError(invalidAlloc));
   });
 
-  describe('Update', () => {
-    it('should grow population when updated', () => {
+  describe('on Update', () => {
+    it('should grow population', () => {
       const startingPop = 10;
       const planet = new PlanetBuilder().withPopulation(startingPop).build();
 
@@ -51,9 +51,45 @@ describe('Planet', () => {
       expect(planet.population).toEqual(expectedPop);
     });
 
-    it.todo('should produced resources when updated');
+    it('should produce resources', () => {
+      const planet = new PlanetBuilder()
+                         .withPopulation(50)
+                         .withIndustryAlloc({
+                           [Resource.CREDIT]: 20,
+                           [Resource.SUPPLY]: 20,
+                           [Resource.FUEL]: 20,
+                           [Resource.MILITARY]: 20,
+                           [Resource.SHIPPARTS]: 20,
+                         })
+                         .build();
+      const expectedResources: ResourceMap = {
+        [Resource.CREDIT]:
+            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.CREDIT]),
+        [Resource.SUPPLY]:
+            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.SUPPLY]),
+        [Resource.FUEL]:
+            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.FUEL]),
+        [Resource.MILITARY]:
+            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.MILITARY]),
+        [Resource.SHIPPARTS]:
+            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.SHIPPARTS]),
+      };
 
-    it.todo('should replace fleet when updated and hostile');
+      planet.update(1);
+
+      expect(planet.getResource(Resource.CREDIT))
+          .toEqual(expectedResources[Resource.CREDIT]);
+      expect(planet.getResource(Resource.SUPPLY))
+          .toEqual(expectedResources[Resource.SUPPLY]);
+      expect(planet.getResource(Resource.FUEL))
+          .toEqual(expectedResources[Resource.FUEL]);
+      expect(planet.getResource(Resource.MILITARY))
+          .toEqual(expectedResources[Resource.MILITARY]);
+      expect(planet.getResource(Resource.SHIPPARTS))
+          .toEqual(expectedResources[Resource.SHIPPARTS]);
+    });
+
+    it.todo('should replace fleet when hostile');
   });
 
   it.todo('should lose population when attacked');
