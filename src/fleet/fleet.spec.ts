@@ -68,7 +68,7 @@ describe('Fleet', () => {
     });
   });
 
-  describe('Travel', () => {
+  describe('TravelTo', () => {
     let destination: Planet;
 
     beforeEach(() => {
@@ -92,7 +92,26 @@ describe('Fleet', () => {
       expect(fleet.calcFuelCostTo(destination)).toEqual(expectedFuelCost);
     });
 
-    it.todo('should deduct supplies and fuel on travel');
+    it('should move the fleet to destinatio when traveling', () => {
+      fleet.addSupply(10000);
+      fleet.addFuel(10000);
+
+      fleet.travelTo(destination);
+
+      expect(fleet.planet).toBe(destination);
+    });
+
+    it('should deduct supplies and fuel on travel', () => {
+      fleet.addSupply(10000);
+      fleet.addFuel(10000);
+      const supplyCost = fleet.calcSupplyCostTo(destination);
+      const fuelCost = fleet.calcFuelCostTo(destination);
+
+      fleet.travelTo(destination);
+
+      expect(fleet.supplies).toEqual(10000 - supplyCost);
+      expect(fleet.fuel).toEqual(10000 - fuelCost);
+    });
 
     it.todo('should refuse to travel without sufficient supplies');
 
@@ -101,7 +120,15 @@ describe('Fleet', () => {
     it.todo('should travel to new location after travel time');
   });
 
-  it.todo('should calculate supply storage limit');
+  it('should calculate supply storage limit', () => {
+    fleet.addShips(Vessle.SUPPLY, 2);
 
-  it.todo('should calculate fuel storage limit');
+    expect(fleet.supplyCapacity).toEqual(2000);
+  });
+
+  it('should calculate fuel storage limit', () => {
+    fleet.addShips(Vessle.FUEL, 3);
+
+    expect(fleet.fuelCapacity).toEqual(3000);
+  });
 });

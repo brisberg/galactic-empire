@@ -11,9 +11,11 @@ import {Vessle} from './ship';
 export class Fleet {
   private location: Planet;
   private state: FleetState = FleetState.ORBIT;
-  /** Fleet is in statis till this Stardate */
-  private stasisTill = 0;
+  /** Fleet is in statis until this Stardate */
+  private stasisUntil = 0;
   private ships: Map<Vessle, number> = new Map();
+  private _supplies = 0;
+  private _fuel = 0;
 
   constructor(planet: Planet) {
     this.location = planet;
@@ -56,6 +58,14 @@ export class Fleet {
     return;
   }
 
+  /** Moves the fleet to a distant planet */
+  travelTo(dest: Planet): void {
+    this.removeSupply(this.calcSupplyCostTo(dest));
+    this.removeFuel(this.calcFuelCostTo(dest));
+    this.location = dest;
+    return;
+  }
+
   /**
    * Calculates the amount of supplies required to move the fleet to the
    * destination.
@@ -79,6 +89,46 @@ export class Fleet {
     });
     return cost * this.location.distanceTo(dest);
   }
+
+  get planet(): Planet {
+    return this.location;
+  }
+
+  /** Total supply capacity of all ships in the fleet */
+  get supplyCapacity(): number {
+    return (this.ships.get(Vessle.SUPPLY) || 0) * 1000;
+  }
+
+  /** Total fuel capacity of all ships in the fleet */
+  get fuelCapacity(): number {
+    return (this.ships.get(Vessle.FUEL) || 0) * 1000;
+  }
+
+  /** Supplies carried by the fleet. */
+  get supplies(): number {
+    return this._supplies;
+  }
+
+  addSupply(supplies: number): void {
+    this._supplies += supplies;
+  }
+
+  removeSupply(supplies: number): void {
+    this._supplies -= supplies;
+  }
+
+  /** Fuel carried by the fleet. */
+  get fuel(): number {
+    return this._fuel;
+  }
+
+  addFuel(fuel: number): void {
+    this._fuel += fuel;
+  }
+
+  removeFuel(fuel: number): void {
+    this._fuel -= fuel;
+  }
 }
 
 /** Possible States a Fleet can be in */
@@ -94,8 +144,10 @@ export enum FleetState {
 /** Error for attempting to remove more ships than the fleet posesses. */
 export class NotEnoughShipsError extends Error {
   constructor(
-      public readonly ship: Vessle, public readonly removed: number,
-      public readonly have: number) {
+      public readonly ship: Vessle,
+      public readonly removed: number,
+      public readonly have: number,
+  ) {
     super(`Cannot remove ${removed} '${ship}'. Fleet only possesses ${have}.`);
     this.name = 'NotEnoughShipsError';
   }

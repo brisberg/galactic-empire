@@ -8,4 +8,6 @@
 export enum Vessle {
   FIGHTER = 'fighter',
   M_TRANSPORT = 'manned-transport',
+  SUPPLY = 'supply',
+  FUEL = 'fuel',
 }
