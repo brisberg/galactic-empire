@@ -1,3 +1,4 @@
+import {Resource, ResourceMap} from 'data/industry';
 import {Position} from 'position/position';
 import {POPULATION_GROWTH_RATE} from './planet';
 import {PlanetBuilder} from './planet.mock';
@@ -10,7 +11,20 @@ describe('Planet', () => {
     expect(planet1.distanceTo(planet2)).toEqual(Math.hypot(10, 5));
   });
 
-  it.todo('should update industry allocation');
+  it('should set industry allocation', () => {
+    const planet = new PlanetBuilder().build();
+    const newAlloc: ResourceMap = {
+      [Resource.CREDIT]: 10,
+      [Resource.SUPPLY]: 30,
+      [Resource.FUEL]: 40,
+      [Resource.MILITARY]: 10,
+      [Resource.SHIPPARTS]: 10,
+    };
+
+    planet.setIndustryAllocation(newAlloc);
+
+    expect(planet.getIndustryAllocation()).toEqual(newAlloc);
+  });
 
   it.todo('should reject industry allocation that does not sum to 100');
 

@@ -4,9 +4,18 @@
  * other modules.
  */
 
+import {Resource, ResourceMap} from 'data/industry';
 import {Position} from '../position/position';
 import {Builder} from '../testing/builder';
 import {Allegience, Planet, TechLevel} from './planet';
+
+const DEFAULT_INDUSTRY_ALLOC: ResourceMap = {
+  [Resource.CREDIT]: 20,
+  [Resource.SUPPLY]: 20,
+  [Resource.FUEL]: 20,
+  [Resource.MILITARY]: 20,
+  [Resource.SHIPPARTS]: 20,
+};
 
 export class PlanetBuilder implements Builder<Planet> {
   private name = 'Galactica';
@@ -17,13 +26,15 @@ export class PlanetBuilder implements Builder<Planet> {
   private population = 50;
   // private fleet: Map<Vessle, number> = new Map();
   /** Mapping of Resource generating industry to an allocation percentage */
-  // private industry: Map<Resource, number> = new Map();
+  private industry: ResourceMap = DEFAULT_INDUSTRY_ALLOC;
   // private resources: Map<Resource, number> = new Map();
 
   public build(): Planet {
-    return new Planet(
+    const planet = new Planet(
         this.name, this.position, this.allegience, this.techlevel,
         this.population);
+    planet.setIndustryAllocation(this.industry);
+    return planet;
   }
 
   public withName(name: string): this {
@@ -48,6 +59,11 @@ export class PlanetBuilder implements Builder<Planet> {
 
   public withPopulation(population: number): this {
     this.population = population;
+    return this;
+  }
+
+  public withIndustryAlloc(alloc: ResourceMap): this {
+    this.industry = alloc;
     return this;
   }
 }

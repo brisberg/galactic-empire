@@ -4,7 +4,9 @@
  * Planets.
  */
 
+import {Resource, ResourceMap} from 'data/industry';
 import {Positionable} from 'position/positionable';
+import {StringToNumMapping} from 'types';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 
@@ -46,6 +48,26 @@ export class Planet extends Positionable {
     return this.fleet.get(ship) || 0;
   }
 
+  /** Returns the current population distribution by industry */
+  getIndustryAllocation(): StringToNumMapping {
+    const alloc: StringToNumMapping = {};
+    this.industry.forEach((value: number, resource: Resource) => {
+      alloc[resource] = value;
+    });
+    return alloc;
+  }
+
+  /**
+   * Sets the planet industry allocation.
+   *
+   * Throws an error if the allocation is not valid.
+   */
+  setIndustryAllocation(alloc: ResourceMap): void {
+    for (const res of Object.values(Resource)) {
+      this.industry.set(res, alloc[res]);
+    }
+  }
+
   update(deltatime: number): void {
     this.population *= Math.pow(1 + POPULATION_GROWTH_RATE, deltatime);
     return;
@@ -68,13 +90,4 @@ export enum TechLevel {
   LIMITED = 'limited',
   ADVANCED = 'advanced',
   SUPERIOR = 'superior',
-}
-
-/** Resource represents the various resources a planet can manufacture. */
-export enum Resource {
-  CREDIT = 'credit',
-  SUPPLY = 'supply',
-  FUEL = 'fuel',
-  MILITARY = 'military',
-  SHIPPARTS = 'ship-parts',
 }
