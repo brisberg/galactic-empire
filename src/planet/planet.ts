@@ -63,6 +63,12 @@ export class Planet extends Positionable {
    * Throws an error if the allocation is not valid.
    */
   setIndustryAllocation(alloc: ResourceMap): void {
+    const total = Object.values(alloc).reduce(
+        (sum: number, value: number) => sum + value, 0);
+    if (total !== 100) {
+      throw new InvalidIndustryAllocError(alloc);
+    }
+
     for (const res of Object.values(Resource)) {
       this.industry.set(res, alloc[res]);
     }
@@ -90,4 +96,15 @@ export enum TechLevel {
   LIMITED = 'limited',
   ADVANCED = 'advanced',
   SUPERIOR = 'superior',
+}
+
+
+/** Error for attempting to set an invalid industry allocation. */
+export class InvalidIndustryAllocError extends Error {
+  constructor(
+      public readonly alloc: ResourceMap,
+  ) {
+    super(`Invalid Industry Allocation '${alloc}. Allocation must sum to 100%`);
+    this.name = 'InvalidIndustryAllocError';
+  }
 }

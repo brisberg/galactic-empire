@@ -1,6 +1,6 @@
 import {Resource, ResourceMap} from 'data/industry';
 import {Position} from 'position/position';
-import {POPULATION_GROWTH_RATE} from './planet';
+import {InvalidIndustryAllocError, POPULATION_GROWTH_RATE} from './planet';
 import {PlanetBuilder} from './planet.mock';
 
 describe('Planet', () => {
@@ -26,7 +26,19 @@ describe('Planet', () => {
     expect(planet.getIndustryAllocation()).toEqual(newAlloc);
   });
 
-  it.todo('should reject industry allocation that does not sum to 100');
+  it('should reject industry allocation that does not sum to 100', () => {
+    const planet = new PlanetBuilder().build();
+    const invalidAlloc: ResourceMap = {
+      [Resource.CREDIT]: 50,
+      [Resource.SUPPLY]: 50,
+      [Resource.FUEL]: 50,
+      [Resource.MILITARY]: 50,
+      [Resource.SHIPPARTS]: 50,
+    };
+
+    expect(() => planet.setIndustryAllocation(invalidAlloc))
+        .toThrowError(new InvalidIndustryAllocError(invalidAlloc));
+  });
 
   describe('Update', () => {
     it('should grow population when updated', () => {
