@@ -9,6 +9,12 @@ import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 
 /**
+ * Growth rate of planet population each Stardate.
+ * TODO: Validate this in the original game
+ */
+export const POPULATION_GROWTH_RATE = 0.01;
+
+/**
  * Planet class represents a planet in the galaxy. The Planet includes all the
  * fields needed to define it's state and has some utility functions for
  * manipulating it.
@@ -40,8 +46,8 @@ export class Planet extends Positionable {
     return this.fleet.get(ship) || 0;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(deltatime: number): void {
+    this.population *= Math.pow(1 + POPULATION_GROWTH_RATE, deltatime);
     return;
   }
 }

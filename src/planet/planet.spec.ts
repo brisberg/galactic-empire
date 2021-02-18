@@ -1,4 +1,5 @@
 import {Position} from 'position/position';
+import {POPULATION_GROWTH_RATE} from './planet';
 import {PlanetBuilder} from './planet.mock';
 
 describe('Planet', () => {
@@ -14,7 +15,15 @@ describe('Planet', () => {
   it.todo('should reject industry allocation that does not sum to 100');
 
   describe('Update', () => {
-    it.todo('should grow population when updated');
+    it('should grow population when updated', () => {
+      const startingPop = 10;
+      const planet = new PlanetBuilder().withPopulation(startingPop).build();
+
+      planet.update(1);
+
+      const expectedPop = startingPop * (1 + POPULATION_GROWTH_RATE);
+      expect(planet.population).toEqual(expectedPop);
+    });
 
     it.todo('should produced resources when updated');
 
