@@ -28,7 +28,7 @@ controller.purchaseFuel();
 console.log(game.playerFleet.fuel);
 console.log(game.playerFleet.calcSupplyCostTo(planets[1]));
 console.log(game.playerFleet.calcFuelCostTo(planets[1]));
-controller.travelTo(planets[1]);
+controller.embark(planets[1]);
 console.log(game.playerFleet.planet);
 console.log(game.playerFleet.supplies);
 console.log(game.playerFleet.fuel);

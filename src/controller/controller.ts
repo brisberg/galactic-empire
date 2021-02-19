@@ -18,7 +18,7 @@ export class PlayerController {
     this.fleet = game.playerFleet;
   }
 
-  public travelTo(planet: Planet): void {
+  public embark(planet: Planet): void {
     this.fleet.travelTo(planet);
   }
 
