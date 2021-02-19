@@ -1,9 +1,13 @@
 describe('Controller', () => {
-  it.todo('should move the fleet when commanded');
+  it.todo('should move the fleet');
 
   it.todo('should attack a planet');
 
-  it.todo('should gather resources');
+  it.todo('should collect taxes');
+
+  it.todo('should purchase supplies');
+
+  it.todo('should purchase fuel');
 
   it.todo('should fill transports');
 
