@@ -4,8 +4,8 @@
  * other modules.
  */
 
-import {Planet} from 'planet/planet';
-import {PlanetBuilder} from 'planet/planet.mock';
+import {Planet} from '../planet/planet';
+import {PlanetBuilder} from '../planet/planet.mock';
 import {Builder} from '../testing/builder';
 import {Fleet, FleetState} from './fleet';
 import {Vessle} from './ship';

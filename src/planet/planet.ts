@@ -4,11 +4,12 @@
  * Planets.
  */
 
-import {PRODUCTION_RATE, Resource, ResourceMap} from 'data/industry';
-import {Positionable} from 'position/positionable';
-import {StringToNumMapping} from 'types';
+import {PRODUCTION_RATE, Resource, ResourceMap} from '../data/industry';
+import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
+import {Positionable} from '../position/positionable';
+import {StringToNumMapping} from '../types';
 
 /**
  * Growth rate of planet population each Stardate.
@@ -41,6 +42,22 @@ export class Planet extends Positionable {
   /** Returns the current amount of the given Resource on this Planet */
   getResource(resource: Resource): number {
     return this.resources.get(resource) || 0;
+  }
+
+  /** TODO: Test this method */
+  transferSupplies(count: number, fleet: Fleet): void {
+    const curRes = this.resources.get(Resource.SUPPLY) || 0;
+    this.resources.set(Resource.SUPPLY, curRes - count);
+    // TODO: Fix up the resource trading
+    fleet.addSupply(count);
+  }
+
+  /** TODO: Test this method */
+  transferFuel(count: number, fleet: Fleet): void {
+    const curRes = this.resources.get(Resource.FUEL) || 0;
+    this.resources.set(Resource.FUEL, curRes - count);
+    // TODO: Fix up the resource trading
+    fleet.addFuel(count);
   }
 
   /** Returns the number of the given vessle  */

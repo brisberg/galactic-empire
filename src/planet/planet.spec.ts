@@ -1,5 +1,5 @@
-import {PRODUCTION_RATE, Resource, ResourceMap} from 'data/industry';
-import {Position} from 'position/position';
+import {PRODUCTION_RATE, Resource, ResourceMap} from '../data/industry';
+import {Position} from '../position/position';
 import {InvalidIndustryAllocError, POPULATION_GROWTH_RATE} from './planet';
 import {PlanetBuilder} from './planet.mock';
 

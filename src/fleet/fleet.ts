@@ -1,6 +1,6 @@
-import {FUEL_COST, SUPPLY_COST} from 'data/travelCosts';
-import {Planet} from 'planet/planet';
-import {StringToNumMapping} from 'types';
+import {FUEL_COST, SUPPLY_COST} from '../data/travelCosts';
+import {Planet} from '../planet/planet';
+import {StringToNumMapping} from '../types';
 import {Vessle} from './ship';
 
 /**

@@ -1,6 +1,6 @@
-import {Game} from 'game/game';
-import {Allegience, Planet} from 'planet/planet';
-import {PlanetBuilder} from 'planet/planet.mock';
+import {Game} from '../game/game';
+import {Allegience, Planet} from '../planet/planet';
+import {PlanetBuilder} from '../planet/planet.mock';
 
 function empirePlanet(name: string): Planet {
   return new PlanetBuilder()

@@ -4,7 +4,7 @@
  * other modules.
  */
 
-import {Resource, ResourceMap} from 'data/industry';
+import {Resource, ResourceMap} from '../data/industry';
 import {Position} from '../position/position';
 import {Builder} from '../testing/builder';
 import {Allegience, Planet, TechLevel} from './planet';

@@ -1,5 +1,5 @@
-import {Fleet} from 'fleet/fleet';
-import {Allegience, Planet} from 'planet/planet';
+import {Fleet} from '../fleet/fleet';
+import {Allegience, Planet} from '../planet/planet';
 
 /**
  * @fileoverview
@@ -26,6 +26,14 @@ export class Game {
   /** The current Stardate */
   public get stardate(): number {
     return this._stardate;
+  }
+
+  /**
+   * Returns a handle to the player controller fleet.
+   * TODO: Test this and put it into the contract.
+   */
+  public get playerFleet(): Fleet {
+    return this.fleet;
   }
 
   /**
