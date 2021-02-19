@@ -87,7 +87,7 @@ describe('Fleet', () => {
     let destination: Planet;
 
     beforeEach(() => {
-      destination = new PlanetBuilder().atPosition(new Position(10, 0)).build();
+      destination = new PlanetBuilder().atPosition(new Position(10, 3)).build();
       fleet.addShips(Vessle.FIGHTER, 100);
       fleet.addShips(Vessle.M_TRANSPORT, 150);
     });
@@ -100,8 +100,9 @@ describe('Fleet', () => {
       const distance = planet.distanceTo(destination);
 
       const expectedSupplyCost =
-          (fighterSupplyCost + transportSupplyCost) * distance;
-      const expectedFuelCost = (fighterFuelCost + transportFuelCost) * distance;
+          Math.ceil((fighterSupplyCost + transportSupplyCost) * distance);
+      const expectedFuelCost =
+          Math.ceil((fighterFuelCost + transportFuelCost) * distance);
 
       expect(fleet.calcSupplyCostTo(destination)).toEqual(expectedSupplyCost);
       expect(fleet.calcFuelCostTo(destination)).toEqual(expectedFuelCost);

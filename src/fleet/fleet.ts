@@ -91,7 +91,7 @@ export class Fleet {
     this.ships.forEach((count: number, ship: Vessle) => {
       cost += count * SUPPLY_COST[ship];
     });
-    return cost * this.location.distanceTo(dest);
+    return Math.ceil(cost * this.location.distanceTo(dest));
   }
 
   /**
@@ -103,7 +103,7 @@ export class Fleet {
     this.ships.forEach((count: number, ship: Vessle) => {
       cost += count * FUEL_COST[ship];
     });
-    return cost * this.location.distanceTo(dest);
+    return Math.ceil(cost * this.location.distanceTo(dest));
   }
 
   get planet(): Planet {
