@@ -65,8 +65,8 @@ describe('Controller', () => {
       it('should deduct supplies and fuel on travel', () => {
         fleet.setResource(Resource.SUPPLY, 10000);
         fleet.setResource(Resource.FUEL, 10000);
-        const supplyCost = fleet.calcSupplyCostTo(planets[1]);
-        const fuelCost = fleet.calcFuelCostTo(planets[1]);
+        const supplyCost = fleet.supplyCostTo(planets[1]);
+        const fuelCost = fleet.fuelCostTo(planets[1]);
 
         controller.embark(planets[1]);
 
@@ -77,7 +77,7 @@ describe('Controller', () => {
       it('should refuse to travel without sufficient supplies', () => {
         fleet.setResource(Resource.SUPPLY, 0);
         fleet.setResource(Resource.FUEL, 10000);
-        const supplyCost = fleet.calcSupplyCostTo(destination);
+        const supplyCost = fleet.supplyCostTo(destination);
 
         expect(() => controller.embark(destination))
             .toThrowError(
@@ -87,7 +87,7 @@ describe('Controller', () => {
       it('should refuse to travel without sufficient fuel', () => {
         fleet.setResource(Resource.SUPPLY, 10000);
         fleet.setResource(Resource.FUEL, 0);
-        const fuelCost = fleet.calcFuelCostTo(destination);
+        const fuelCost = fleet.fuelCostTo(destination);
 
         expect(() => controller.embark(destination))
             .toThrowError(

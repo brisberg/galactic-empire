@@ -15,7 +15,9 @@ export class Game {
   private planets: Map<string, Planet> = new Map();
   private fleet: Fleet;
 
-  constructor(stardate: number, planets: Planet[]) {
+  constructor(
+      stardate: number, planets: Planet[],
+      initialFleet: FleetDef = {ships: {}, resources: {}}) {
     this._stardate = stardate;
 
     planets.forEach((planet: Planet) => {
@@ -24,12 +26,13 @@ export class Game {
 
     // Player Fleet (initialized from FleetDef)
     this.fleet = new Fleet(planets[0]);
-    Object.keys(FleetDef.ships).forEach((ship: string) => {
-      this.fleet.addShips(ship as Vessle, FleetDef.ships[ship as Vessle] || 0);
+    Object.keys(initialFleet.ships).forEach((ship: string) => {
+      this.fleet.addShips(
+          ship as Vessle, initialFleet.ships[ship as Vessle] || 0);
     });
-    Object.keys(FleetDef.resources).forEach((res: string) => {
+    Object.keys(initialFleet.resources).forEach((res: string) => {
       this.fleet.addResource(
-          res as Resource, FleetDef.resources[res as Resource] || 0);
+          res as Resource, initialFleet.resources[res as Resource] || 0);
     });
   }
 

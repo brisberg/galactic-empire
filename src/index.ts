@@ -1,4 +1,5 @@
 import {PlayerController} from './controller/controller';
+import {initialFleet} from './data/fleet';
 import {Resource} from './data/industry';
 import {Vessle} from './fleet/ship';
 import {Game} from './game/game';
@@ -17,7 +18,7 @@ const planets: Planet[] = [
       100.5),
 ];
 
-const game: Game = new Game(0, planets);
+const game: Game = new Game(0, planets, initialFleet);
 
 const controller = new PlayerController(game);
 
@@ -41,8 +42,8 @@ console.log(game.playerFleet.getResource(Resource.SUPPLY));
 controller.purchaseResource(Resource.FUEL, 1000);
 console.log(game.playerFleet.getResource(Resource.CREDIT));
 console.log(game.playerFleet.getResource(Resource.FUEL));
-console.log(game.playerFleet.calcSupplyCostTo(planets[1]));
-console.log(game.playerFleet.calcFuelCostTo(planets[1]));
+console.log(game.playerFleet.supplyCostTo(planets[1]));
+console.log(game.playerFleet.fuelCostTo(planets[1]));
 controller.embark(planets[1]);
 console.log(game.playerFleet.planet);
 console.log(game.playerFleet.getResource(Resource.SUPPLY));

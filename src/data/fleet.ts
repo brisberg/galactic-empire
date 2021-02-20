@@ -7,11 +7,12 @@
 import {Vessle} from '../fleet/ship';
 import {Resource, ResourceMap} from './industry';
 
+export interface FleetDef {
+  ships: {[ship in Vessle]?: number}, resources: ResourceMap,
+}
+
 /** Initial Fleet the player starts with. */
-export const FleetDef: {
-  ships: {[ship in Vessle]?: number},
-  resources: ResourceMap,
-} = {
+export const initialFleet: FleetDef = {
   ships: {
     [Vessle.FIGHTER]: 160,
     [Vessle.TRANSPORT]: 100,

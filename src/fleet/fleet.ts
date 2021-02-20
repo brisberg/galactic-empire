@@ -81,7 +81,7 @@ export class Fleet extends Depot {
    * Calculates the amount of supplies required to move the fleet to the
    * destination.
    */
-  calcSupplyCostTo(dest: Planet): number {
+  supplyCostTo(dest: Planet): number {
     let cost = 0;
     this.ships.forEach((count: number, ship: Vessle) => {
       cost += count * SUPPLY_COST[ship];
@@ -93,7 +93,7 @@ export class Fleet extends Depot {
    * Calculates the amount of fuel required to move the fleet to the
    * destination.
    */
-  calcFuelCostTo(dest: Planet): number {
+  fuelCostTo(dest: Planet): number {
     let cost = 0;
     this.ships.forEach((count: number, ship: Vessle) => {
       cost += count * FUEL_COST[ship];

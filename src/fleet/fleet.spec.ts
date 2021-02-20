@@ -102,8 +102,8 @@ describe('Fleet', () => {
           (fighterFuelCost + transportFuelCost) * distance,
       );
 
-      expect(fleet.calcSupplyCostTo(destination)).toEqual(expectedSupplyCost);
-      expect(fleet.calcFuelCostTo(destination)).toEqual(expectedFuelCost);
+      expect(fleet.supplyCostTo(destination)).toEqual(expectedSupplyCost);
+      expect(fleet.fuelCostTo(destination)).toEqual(expectedFuelCost);
     });
 
     it('should move the fleet to destination when traveling', () => {

@@ -24,9 +24,9 @@ export class PlayerController {
   /** Moves the fleet to a distant planet */
   public embark(planet: Planet): void {
     const supplies = this.fleet.getResource(Resource.SUPPLY);
-    const supplyCost = this.fleet.calcSupplyCostTo(planet);
+    const supplyCost = this.fleet.supplyCostTo(planet);
     const fuel = this.fleet.getResource(Resource.FUEL);
-    const fuelCost = this.fleet.calcFuelCostTo(planet);
+    const fuelCost = this.fleet.fuelCostTo(planet);
 
     if (supplies < supplyCost) {
       throw new InsufficientResourceError(
@@ -37,9 +37,8 @@ export class PlayerController {
       throw new InsufficientResourceError(Resource.FUEL, fuel, fuelCost);
     }
 
-    this.fleet.removeResource(
-        Resource.SUPPLY, this.fleet.calcSupplyCostTo(planet));
-    this.fleet.removeResource(Resource.FUEL, this.fleet.calcFuelCostTo(planet));
+    this.fleet.removeResource(Resource.SUPPLY, this.fleet.supplyCostTo(planet));
+    this.fleet.removeResource(Resource.FUEL, this.fleet.fuelCostTo(planet));
 
     const dist = this.fleet.planet.distanceTo(planet);
     this.fleet.travelTo(planet);
