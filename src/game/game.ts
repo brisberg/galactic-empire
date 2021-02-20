@@ -49,6 +49,11 @@ export class Game {
     return this.fleet;
   }
 
+  /** Returns an array of all Planets in the game. */
+  public getAllPlanets(): Planet[] {
+    return [...this.planets.values()];
+  }
+
   /**
    * Advances the simulation by the given number of Stardates.
    *
