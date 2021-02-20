@@ -106,4 +106,9 @@ export class PlayerController {
     this.fleet.addShips(ship, amount);
     this.game.update(0.5);
   }
+
+  /** Destroys the specified number of ships in the fleet. */
+  public scrapShips(ship: Vessle, amount: number): void {
+    this.fleet.removeShips(ship, amount);
+  }
 }

@@ -196,6 +196,14 @@ describe('Controller', () => {
     expect(game.stardate).toEqual(0.5);
   });
 
+  it('should scrap ships', () => {
+    fleet.addShips(Vessle.FIGHTER, 100);
+
+    controller.scrapShips(Vessle.FIGHTER, 80);
+
+    expect(fleet.getShips(Vessle.FIGHTER)).toEqual(20);
+  });
+
   it.todo('should send spy satelites');
 
   it.todo('should attack a planet');
