@@ -1,3 +1,4 @@
+import {SHIP_COST} from '../data/fleet';
 import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
 import {InsufficientResourceError} from '../depot/depot';
 import {Fleet} from '../fleet/fleet';
@@ -90,5 +91,18 @@ export class PlayerController {
   public setIndustryAllocation(alloc: ResourceMap): void {
     this.fleet.planet.setIndustryAllocation(alloc);
     this.game.update(0.5);
+  }
+
+  /** Constructs the requested number of ships at the current Planet. */
+  public buildShips(ship: Vessle, amount: number): void {
+    this.fleet.planet.removeResource(
+        Resource.SHIPPARTS,
+        amount * (SHIP_COST[ship][Resource.SHIPPARTS] || 1),
+    );
+    this.fleet.removeResource(
+        Resource.CREDIT,
+        amount * (SHIP_COST[ship][Resource.CREDIT] || 1),
+    );
+    this.fleet.addShips(ship, amount);
   }
 }

@@ -25,3 +25,28 @@ export const initialFleet: FleetDef = {
     [Resource.FUEL]: 2000,
   },
 };
+
+/** Construction costs of all Ships */
+export const SHIP_COST: {[ship in Vessle]: ResourceMap} = {
+  [Vessle.FIGHTER]: {
+    [Resource.CREDIT]: 40,
+    [Resource.SHIPPARTS]: 5,
+  },
+  [Vessle.TRANSPORT]: {
+    [Resource.CREDIT]: 6,
+    [Resource.SHIPPARTS]: 8,
+  },
+  [Vessle.M_TRANSPORT]: {
+    [Resource.CREDIT]: 6,
+    [Resource.SHIPPARTS]: 8,
+    [Resource.MILITARY]: 1,
+  },
+  [Vessle.SUPPLY]: {
+    [Resource.CREDIT]: 3000,
+    [Resource.SHIPPARTS]: 500,
+  },
+  [Vessle.FUEL]: {
+    [Resource.CREDIT]: 3000,
+    [Resource.SHIPPARTS]: 500,
+  },
+};

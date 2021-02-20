@@ -1,3 +1,4 @@
+import {SHIP_COST} from '../data/fleet';
 import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
 import {InsufficientResourceError} from '../depot/depot';
 import {Fleet} from '../fleet/fleet';
@@ -180,7 +181,19 @@ describe('Controller', () => {
     expect(game.stardate).toEqual(0.5);
   });
 
-  it.todo('should build ships');
+  it('should build ships', () => {
+    fleet.planet.setResource(Resource.SHIPPARTS, 1000);
+    fleet.setResource(Resource.CREDIT, 5000);
+
+    controller.buildShips(Vessle.FIGHTER, 100);
+
+    const cost = SHIP_COST[Vessle.FIGHTER];
+    expect(fleet.planet.getResource(Resource.SHIPPARTS))
+        .toEqual(1000 - 100 * (cost[Resource.SHIPPARTS] || 1));
+    expect(fleet.getResource(Resource.CREDIT))
+        .toEqual(5000 - 100 * (cost[Resource.CREDIT] || 1));
+    expect(fleet.getShips(Vessle.FIGHTER)).toEqual(100);
+  });
 
   it.todo('should send spy satelites');
 
