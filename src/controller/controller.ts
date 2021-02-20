@@ -1,3 +1,4 @@
+import {Resource, RESOURCE_COST} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
 import {Game} from '../game/game';
 import {Planet} from '../planet/planet';
@@ -18,19 +19,28 @@ export class PlayerController {
     this.fleet = game.playerFleet;
   }
 
+  /** Moves the fleet to a distant planet */
   public embark(planet: Planet): void {
+    const dist = this.fleet.planet.distanceTo(planet);
     this.fleet.travelTo(planet);
+    this.game.update(dist);
   }
 
-  // public collectTaxes(): void {
-  //   this.fleet.planet.
-  // }
-
-  public purchaseSupplies(): void {
-    this.fleet.planet.transferSupplies(100, this.fleet);
+  /** Collect taxes in Credits from a Planet */
+  public collectTaxes(): void {
+    const taxes = this.fleet.planet.getResource(Resource.CREDIT);
+    this.fleet.planet.removeResource(Resource.CREDIT, taxes);
+    this.fleet.addResource(Resource.CREDIT, taxes);
+    this.game.update(0.5);
   }
 
-  public purchaseFuel(): void {
-    this.fleet.planet.transferFuel(100, this.fleet);
+  /** Purchase all of a resource from a planet for Credits. */
+  public purchaseResource(resource: Resource): void {
+    const amount = this.fleet.planet.getResource(resource);
+    this.fleet.removeResource(
+        Resource.CREDIT, amount * (RESOURCE_COST[resource] || 0));
+    this.fleet.planet.removeResource(resource, amount);
+    this.fleet.addResource(resource, amount);
+    this.game.update(0.5);
   }
 }

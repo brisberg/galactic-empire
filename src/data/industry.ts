@@ -26,3 +26,13 @@ export const PRODUCTION_RATE: ResourceMap = {
   [Resource.MILITARY]: 3,
   [Resource.SHIPPARTS]: 10,
 };
+
+/** Costs of various resources in credits. */
+// TODO: Use the real numbers from the game
+export const RESOURCE_COST: ResourceMap = {
+  [Resource.CREDIT]: 0,
+  [Resource.SUPPLY]: 4,
+  [Resource.FUEL]: 6,
+  [Resource.MILITARY]: 0,
+  [Resource.SHIPPARTS]: 10,
+};

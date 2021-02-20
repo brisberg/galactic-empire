@@ -5,7 +5,6 @@
  */
 
 import {PRODUCTION_RATE, Resource, ResourceMap} from '../data/industry';
-import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 import {PositionableDepot} from '../position/positionable';
@@ -36,20 +35,6 @@ export class Planet extends PositionableDepot {
       public population: number,
   ) {
     super(position);
-  }
-
-  /** TODO: Test this method */
-  transferSupplies(count: number, fleet: Fleet): void {
-    // TODO: Fix up the resource trading
-    this.removeResource(Resource.SUPPLY, count);
-    fleet.addResource(Resource.SUPPLY, count);
-  }
-
-  /** TODO: Test this method */
-  transferFuel(count: number, fleet: Fleet): void {
-    // TODO: Fix up the resource trading
-    this.removeResource(Resource.FUEL, count);
-    fleet.addResource(Resource.FUEL, count);
   }
 
   /** Returns the number of the given vessle  */
