@@ -23,15 +23,13 @@ describe('Fleet', () => {
   });
 
   it('should initialize with no ships', () => {
-    expect(fleet.getShips()).toEqual({});
+    expect(fleet.getAllShips()).toEqual({});
   });
 
   it('should add ships', () => {
     fleet.addShips(Vessle.FIGHTER, 10);
 
-    expect(fleet.getShips()).toEqual({
-      [Vessle.FIGHTER]: 10,
-    });
+    expect(fleet.getShips(Vessle.FIGHTER)).toEqual(10);
   });
 
   it('should remove ships', () => {
@@ -39,9 +37,7 @@ describe('Fleet', () => {
 
     fleet.removeShips(Vessle.FIGHTER, 5);
 
-    expect(fleet.getShips()).toEqual({
-      [Vessle.FIGHTER]: 5,
-    });
+    expect(fleet.getShips(Vessle.FIGHTER)).toEqual(5);
   });
 
   it('should throw an error when removing more ships than exist', () => {
@@ -60,8 +56,8 @@ describe('Fleet', () => {
 
       sourceFleet.transferTo(Vessle.FIGHTER, 3, fleet);
 
-      expect(fleet.getShips()).toEqual({[Vessle.FIGHTER]: 3});
-      expect(sourceFleet.getShips()).toEqual({[Vessle.FIGHTER]: 7});
+      expect(fleet.getAllShips()).toEqual({[Vessle.FIGHTER]: 3});
+      expect(sourceFleet.getAllShips()).toEqual({[Vessle.FIGHTER]: 7});
     });
 
     it('should throw an error when transfering more ships than exist', () => {

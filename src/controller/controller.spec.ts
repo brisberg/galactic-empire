@@ -38,6 +38,7 @@ describe('Controller', () => {
     controller.embark(planets[1]);
 
     expect(fleet.planet).toBe(planets[1]);
+    expect(game.stardate).toEqual(planets[0].distanceTo(planets[1]));
   });
 
   it('should collect taxes', () => {
@@ -46,6 +47,7 @@ describe('Controller', () => {
     controller.collectTaxes();
 
     expect(fleet.getResource(Resource.CREDIT)).toEqual(1000);
+    expect(game.stardate).toEqual(0.5);
   });
 
   it('should purchase supplies', () => {
@@ -58,6 +60,7 @@ describe('Controller', () => {
     const expectedCost = 200 * (RESOURCE_COST[Resource.SUPPLY] || 1);
     expect(fleet.getResource(Resource.CREDIT)).toEqual(2000 - expectedCost);
     expect(fleet.getResource(Resource.SUPPLY)).toEqual(200);
+    expect(game.stardate).toEqual(0.5);
   });
 
   it('should purchase fuel', () => {
@@ -70,11 +73,31 @@ describe('Controller', () => {
     const expectedCost = 200 * (RESOURCE_COST[Resource.FUEL] || 1);
     expect(fleet.getResource(Resource.CREDIT)).toEqual(2000 - expectedCost);
     expect(fleet.getResource(Resource.FUEL)).toEqual(200);
+    expect(game.stardate).toEqual(0.5);
   });
 
-  it.todo('should fill transports');
+  it('should fill transports', () => {
+    fleet.addShips(Vessle.TRANSPORT, 100);
+    fleet.planet.setResource(Resource.MILITARY, 300);
 
-  it.todo('should unload transports');
+    controller.fillTransports(100);
+
+    expect(fleet.planet.getResource(Resource.MILITARY)).toEqual(200);
+    expect(fleet.getShips(Vessle.TRANSPORT)).toEqual(0);
+    expect(fleet.getShips(Vessle.M_TRANSPORT)).toEqual(100);
+    expect(game.stardate).toEqual(0.5);
+  });
+
+  it('should unload transports', () => {
+    fleet.addShips(Vessle.M_TRANSPORT, 100);
+
+    controller.unloadTransports(100);
+
+    expect(fleet.planet.getResource(Resource.MILITARY)).toEqual(100);
+    expect(fleet.getShips(Vessle.TRANSPORT)).toEqual(100);
+    expect(fleet.getShips(Vessle.M_TRANSPORT)).toEqual(0);
+    expect(game.stardate).toEqual(0.5);
+  });
 
   it('should wait in statis', () => {
     controller.waitInStatis(100);
@@ -99,6 +122,7 @@ describe('Controller', () => {
       [Resource.SHIPPARTS]: 0,
     };
     expect(fleet.planet.getIndustryAllocation()).toEqual(expectedAlloc);
+    expect(game.stardate).toEqual(0.5);
   });
 
   it.todo('should build ships');

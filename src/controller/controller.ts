@@ -1,5 +1,6 @@
 import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
+import {Vessle} from '../fleet/ship';
 import {Game} from '../game/game';
 import {Planet} from '../planet/planet';
 
@@ -40,6 +41,25 @@ export class PlayerController {
         Resource.CREDIT, amount * (RESOURCE_COST[resource] || 0));
     this.fleet.planet.removeResource(resource, amount);
     this.fleet.addResource(resource, amount);
+    this.game.update(0.5);
+  }
+
+  /** Filled empty Transport ships with troops to produce Manned Transports. */
+  public fillTransports(amount: number): void {
+    this.fleet.planet.removeResource(Resource.MILITARY, amount);
+    this.fleet.removeShips(Vessle.TRANSPORT, amount);
+    this.fleet.addShips(Vessle.M_TRANSPORT, amount);
+    this.game.update(0.5);
+  }
+
+  /**
+   * Unloads Transport ships. Returning the troops to the planet and replacing
+   * the Manned Transports with empty Transports.
+   */
+  public unloadTransports(amount: number): void {
+    this.fleet.removeShips(Vessle.M_TRANSPORT, amount);
+    this.fleet.addShips(Vessle.TRANSPORT, amount);
+    this.fleet.planet.addResource(Resource.MILITARY, amount);
     this.game.update(0.5);
   }
 

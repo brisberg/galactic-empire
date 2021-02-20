@@ -25,8 +25,13 @@ export class Fleet extends Depot {
     this.location = planet;
   }
 
+  /** Return the number of a type of ship in the fleet. */
+  getShips(ship: Vessle): number {
+    return this.ships.get(ship) || 0;
+  }
+
   /** Return an object representing all ships in the fleet. */
-  getShips(): StringToNumMapping {
+  getAllShips(): StringToNumMapping {
     const ships: StringToNumMapping = {};
     this.ships.forEach((count: number, ship: Vessle) => {
       ships[ship] = count;
