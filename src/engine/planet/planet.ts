@@ -4,11 +4,11 @@
  * Planets.
  */
 
+import {StringToNumMapping} from '../../types';
 import {PRODUCTION_RATE, Resource, ResourceMap} from '../data/industry';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
 import {PositionableDepot} from '../position/positionable';
-import {StringToNumMapping} from '../types';
 
 /**
  * Growth rate of planet population each Stardate.

@@ -4,9 +4,10 @@
  * other modules.
  */
 
+import {Builder} from '../../testing/builder';
 import {Resource, ResourceMap} from '../data/industry';
 import {Position} from '../position/position';
-import {Builder} from '../testing/builder';
+
 import {Allegience, Planet, TechLevel} from './planet';
 
 const DEFAULT_INDUSTRY_ALLOC: ResourceMap = {

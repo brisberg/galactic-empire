@@ -4,8 +4,9 @@
  * other modules.
  */
 
+import {Builder} from '../../testing/builder';
 import {Resource} from '../data/industry';
-import {Builder} from '../testing/builder';
+
 import {Depot} from './depot';
 
 export class DepotBuilder implements Builder<Depot> {

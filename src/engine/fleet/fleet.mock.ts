@@ -4,10 +4,11 @@
  * other modules.
  */
 
+import {Builder} from '../../testing/builder';
 import {Resource} from '../data/industry';
 import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
-import {Builder} from '../testing/builder';
+
 import {Fleet, FleetState} from './fleet';
 import {Vessle} from './ship';
 
