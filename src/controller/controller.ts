@@ -1,4 +1,5 @@
 import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
+import {InsufficientResourceError} from '../depot/depot';
 import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Game} from '../game/game';
@@ -22,6 +23,24 @@ export class PlayerController {
 
   /** Moves the fleet to a distant planet */
   public embark(planet: Planet): void {
+    const supplies = this.fleet.getResource(Resource.SUPPLY);
+    const supplyCost = this.fleet.calcSupplyCostTo(planet);
+    const fuel = this.fleet.getResource(Resource.FUEL);
+    const fuelCost = this.fleet.calcFuelCostTo(planet);
+
+    if (supplies < supplyCost) {
+      throw new InsufficientResourceError(
+          Resource.SUPPLY, supplies, supplyCost);
+    }
+
+    if (fuel < fuelCost) {
+      throw new InsufficientResourceError(Resource.FUEL, fuel, fuelCost);
+    }
+
+    this.fleet.removeResource(
+        Resource.SUPPLY, this.fleet.calcSupplyCostTo(planet));
+    this.fleet.removeResource(Resource.FUEL, this.fleet.calcFuelCostTo(planet));
+
     const dist = this.fleet.planet.distanceTo(planet);
     this.fleet.travelTo(planet);
     this.game.update(dist);

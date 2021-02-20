@@ -1,6 +1,6 @@
 import {Resource} from '../data/industry';
 import {FUEL_COST, SUPPLY_COST} from '../data/travelCosts';
-import {Depot, InsufficientResourceError} from '../depot/depot';
+import {Depot} from '../depot/depot';
 import {Planet} from '../planet/planet';
 import {StringToNumMapping} from '../types';
 import {Vessle} from './ship';
@@ -73,22 +73,6 @@ export class Fleet extends Depot {
 
   /** Moves the fleet to a distant planet */
   travelTo(dest: Planet): void {
-    const supplies = this.getResource(Resource.SUPPLY);
-    const supplyCost = this.calcSupplyCostTo(dest);
-    const fuel = this.getResource(Resource.FUEL);
-    const fuelCost = this.calcFuelCostTo(dest);
-
-    if (supplies < supplyCost) {
-      throw new InsufficientResourceError(
-          Resource.SUPPLY, supplies, supplyCost);
-    }
-
-    if (fuel < fuelCost) {
-      throw new InsufficientResourceError(Resource.FUEL, fuel, fuelCost);
-    }
-
-    this.removeResource(Resource.SUPPLY, this.calcSupplyCostTo(dest));
-    this.removeResource(Resource.FUEL, this.calcFuelCostTo(dest));
     this.location = dest;
     return;
   }

@@ -1,4 +1,5 @@
 import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
+import {InsufficientResourceError} from '../depot/depot';
 import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Game} from '../game/game';
@@ -34,11 +35,65 @@ describe('Controller', () => {
     controller = new PlayerController(game);
   });
 
-  it('should move the fleet', () => {
-    controller.embark(planets[1]);
+  describe('Embark', () => {
+    let destination: Planet;
 
-    expect(fleet.planet).toBe(planets[1]);
-    expect(game.stardate).toEqual(planets[0].distanceTo(planets[1]));
+    beforeEach(() => {
+      destination = planets[1];
+    });
+
+    it('should move the fleet', () => {
+      controller.embark(destination);
+
+      expect(fleet.planet).toBe(destination);
+      expect(game.stardate).toEqual(planets[0].distanceTo(destination));
+    });
+
+    it('should take time equal to the distance', () => {
+      controller.embark(destination);
+
+      expect(game.stardate).toEqual(planets[0].distanceTo(destination));
+    });
+
+    describe('with Fighters, Supply and Fuel ships', () => {
+      beforeEach(() => {
+        fleet.addShips(Vessle.FIGHTER, 100);
+        fleet.addShips(Vessle.SUPPLY, 10);
+        fleet.addShips(Vessle.FUEL, 10);
+      });
+
+      it('should deduct supplies and fuel on travel', () => {
+        fleet.setResource(Resource.SUPPLY, 10000);
+        fleet.setResource(Resource.FUEL, 10000);
+        const supplyCost = fleet.calcSupplyCostTo(planets[1]);
+        const fuelCost = fleet.calcFuelCostTo(planets[1]);
+
+        controller.embark(planets[1]);
+
+        expect(fleet.getResource(Resource.SUPPLY)).toEqual(10000 - supplyCost);
+        expect(fleet.getResource(Resource.FUEL)).toEqual(10000 - fuelCost);
+      });
+
+      it('should refuse to travel without sufficient supplies', () => {
+        fleet.setResource(Resource.SUPPLY, 0);
+        fleet.setResource(Resource.FUEL, 10000);
+        const supplyCost = fleet.calcSupplyCostTo(destination);
+
+        expect(() => controller.embark(destination))
+            .toThrowError(
+                new InsufficientResourceError(Resource.SUPPLY, 0, supplyCost));
+      });
+
+      it('should refuse to travel without sufficient fuel', () => {
+        fleet.setResource(Resource.SUPPLY, 10000);
+        fleet.setResource(Resource.FUEL, 0);
+        const fuelCost = fleet.calcFuelCostTo(destination);
+
+        expect(() => controller.embark(destination))
+            .toThrowError(
+                new InsufficientResourceError(Resource.FUEL, 0, fuelCost));
+      });
+    });
   });
 
   it('should collect taxes', () => {
