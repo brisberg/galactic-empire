@@ -104,5 +104,6 @@ export class PlayerController {
         amount * (SHIP_COST[ship][Resource.CREDIT] || 1),
     );
     this.fleet.addShips(ship, amount);
+    this.game.update(0.5);
   }
 }

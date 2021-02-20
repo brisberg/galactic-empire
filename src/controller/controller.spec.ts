@@ -193,6 +193,7 @@ describe('Controller', () => {
     expect(fleet.getResource(Resource.CREDIT))
         .toEqual(5000 - 100 * (cost[Resource.CREDIT] || 1));
     expect(fleet.getShips(Vessle.FIGHTER)).toEqual(100);
+    expect(game.stardate).toEqual(0.5);
   });
 
   it.todo('should send spy satelites');
