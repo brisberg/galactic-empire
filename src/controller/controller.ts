@@ -42,4 +42,9 @@ export class PlayerController {
     this.fleet.addResource(resource, amount);
     this.game.update(0.5);
   }
+
+  /** Wait for the specified amount of time. Moves the simulation forward. */
+  public waitInStatis(waitTime: number): void {
+    this.game.update(waitTime);
+  }
 }

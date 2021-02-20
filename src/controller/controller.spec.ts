@@ -1,4 +1,6 @@
+import {Resource, RESOURCE_COST} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
+import {Vessle} from '../fleet/ship';
 import {Game} from '../game/game';
 import {Allegience, Planet, TechLevel} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
@@ -38,18 +40,46 @@ describe('Controller', () => {
   });
 
   it('should collect taxes', () => {
-    return;
+    fleet.planet.setResource(Resource.CREDIT, 1000);
+
+    controller.collectTaxes();
+
+    expect(fleet.getResource(Resource.CREDIT)).toEqual(1000);
   });
 
-  it.todo('should purchase supplies');
+  it('should purchase supplies', () => {
+    fleet.addShips(Vessle.SUPPLY, 1);
+    fleet.setResource(Resource.CREDIT, 2000);
+    fleet.planet.setResource(Resource.SUPPLY, 1000);
 
-  it.todo('should purchase fuel');
+    controller.purchaseResource(Resource.SUPPLY, 200);
+
+    const expectedCost = 200 * (RESOURCE_COST[Resource.SUPPLY] || 1);
+    expect(fleet.getResource(Resource.CREDIT)).toEqual(2000 - expectedCost);
+    expect(fleet.getResource(Resource.SUPPLY)).toEqual(200);
+  });
+
+  it('should purchase fuel', () => {
+    fleet.addShips(Vessle.FUEL, 1);
+    fleet.setResource(Resource.CREDIT, 2000);
+    fleet.planet.setResource(Resource.FUEL, 1000);
+
+    controller.purchaseResource(Resource.FUEL, 200);
+
+    const expectedCost = 200 * (RESOURCE_COST[Resource.FUEL] || 1);
+    expect(fleet.getResource(Resource.CREDIT)).toEqual(2000 - expectedCost);
+    expect(fleet.getResource(Resource.FUEL)).toEqual(200);
+  });
 
   it.todo('should fill transports');
 
   it.todo('should unload transports');
 
-  it.todo('should wait in statis');
+  it('should wait in statis', () => {
+    controller.waitInStatis(100);
+
+    expect(game.stardate).toEqual(100);
+  });
 
   it.todo('should re-allocate a planet');
 
