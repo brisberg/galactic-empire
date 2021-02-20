@@ -27,9 +27,10 @@ planets[0].setIndustryAllocation({
   [Resource.FUEL]: 30,
 });
 game.update(100);
-game.playerFleet.addShips(Vessle.FIGHTER, 100);
 game.playerFleet.addShips(Vessle.SUPPLY, 1);
 game.playerFleet.addShips(Vessle.FUEL, 1);
+console.log(game.playerFleet.getAllShips());
+console.log(game.playerFleet.getAllResources());
 console.log(game.playerFleet.planet);
 controller.collectTaxes();
 console.log(game.playerFleet.planet);

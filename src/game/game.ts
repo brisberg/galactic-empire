@@ -1,4 +1,7 @@
+import {FleetDef} from '../data/fleet';
+import {Resource} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
+import {Vessle} from '../fleet/ship';
 import {Allegience, Planet} from '../planet/planet';
 
 /**
@@ -19,8 +22,15 @@ export class Game {
       this.registerPlanet(planet);
     });
 
-    // TODO: Initialize the player fleet from initial fleet definition
+    // Player Fleet (initialized from FleetDef)
     this.fleet = new Fleet(planets[0]);
+    Object.keys(FleetDef.ships).forEach((ship: string) => {
+      this.fleet.addShips(ship as Vessle, FleetDef.ships[ship as Vessle] || 0);
+    });
+    Object.keys(FleetDef.resources).forEach((res: string) => {
+      this.fleet.addResource(
+          res as Resource, FleetDef.resources[res as Resource] || 0);
+    });
   }
 
   /** The current Stardate */
