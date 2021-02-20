@@ -8,7 +8,7 @@ import {PRODUCTION_RATE, Resource, ResourceMap} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Position} from '../position/position';
-import {Positionable} from '../position/positionable';
+import {PositionableDepot} from '../position/positionable';
 import {StringToNumMapping} from '../types';
 
 /**
@@ -22,8 +22,7 @@ export const POPULATION_GROWTH_RATE = 0.01;
  * fields needed to define it's state and has some utility functions for
  * manipulating it.
  */
-export class Planet extends Positionable {
-  private resources: Map<Resource, number> = new Map();
+export class Planet extends PositionableDepot {
   private fleet: Map<Vessle, number> = new Map();
   /** Mapping of Resource generating industry to an allocation percentage */
   private industry: Map<Resource, number> = new Map();
@@ -39,29 +38,17 @@ export class Planet extends Positionable {
     super(position);
   }
 
-  /** Returns the current amount of the given Resource on this Planet */
-  getResource(resource: Resource): number {
-    return this.resources.get(resource) || 0;
-  }
-
-  /** Adds the amount of the given Resource to the Planet */
-  addResource(resource: Resource, amount: number): void {
-    this.resources.set(resource, this.getResource(resource) + amount);
-  }
-
   /** TODO: Test this method */
   transferSupplies(count: number, fleet: Fleet): void {
-    const curRes = this.resources.get(Resource.SUPPLY) || 0;
-    this.resources.set(Resource.SUPPLY, curRes - count);
     // TODO: Fix up the resource trading
+    this.removeResource(Resource.SUPPLY, count);
     fleet.addResource(Resource.SUPPLY, count);
   }
 
   /** TODO: Test this method */
   transferFuel(count: number, fleet: Fleet): void {
-    const curRes = this.resources.get(Resource.FUEL) || 0;
-    this.resources.set(Resource.FUEL, curRes - count);
     // TODO: Fix up the resource trading
+    this.removeResource(Resource.FUEL, count);
     fleet.addResource(Resource.FUEL, count);
   }
 
@@ -100,9 +87,8 @@ export class Planet extends Positionable {
     // Produce resources for all industries
     this.industry.forEach((alloc: number, res: Resource) => {
       const activePop = this.population * (alloc / 100);
-      const currentRes = this.resources.get(res) || 0;
-      const resProduced = activePop * (PRODUCTION_RATE[res] || 1);
-      this.resources.set(res, currentRes + resProduced);
+      const product = activePop * (PRODUCTION_RATE[res] || 1);
+      this.addResource(res, product);
     });
 
     // Grow Population
