@@ -64,15 +64,15 @@ describe('Planet', () => {
                          .build();
       const expectedResources: ResourceMap = {
         [Resource.CREDIT]:
-            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.CREDIT]),
+            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.CREDIT] || 1)),
         [Resource.SUPPLY]:
-            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.SUPPLY]),
+            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.SUPPLY] || 1)),
         [Resource.FUEL]:
-            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.FUEL]),
-        [Resource.MILITARY]:
-            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.MILITARY]),
-        [Resource.SHIPPARTS]:
-            Math.floor(50 * 20 / 100 * PRODUCTION_RATE[Resource.SHIPPARTS]),
+            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.FUEL] || 1)),
+        [Resource.MILITARY]: Math.floor(
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.MILITARY] || 1)),
+        [Resource.SHIPPARTS]: Math.floor(
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.SHIPPARTS] || 1)),
       };
 
       planet.update(1);

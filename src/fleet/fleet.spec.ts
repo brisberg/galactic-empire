@@ -1,11 +1,12 @@
+import {Resource} from '../data/industry';
 import {FUEL_COST, SUPPLY_COST} from '../data/travelCosts';
+import {InsufficientResourceError} from '../depot/depot';
 import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
 import {Position} from '../position/position';
 
 import {
   Fleet,
-  InsufficientResourceError,
   InvalidFleetLocationError,
   NotEnoughShipsError,
 } from './fleet';
@@ -90,27 +91,34 @@ describe('Fleet', () => {
       destination = new PlanetBuilder().atPosition(new Position(10, 3)).build();
       fleet.addShips(Vessle.FIGHTER, 100);
       fleet.addShips(Vessle.M_TRANSPORT, 150);
+      fleet.addShips(Vessle.SUPPLY, 10);
+      fleet.addShips(Vessle.FUEL, 10);
     });
 
     it('should calculate supply and fuel costs of travel', () => {
       const fighterSupplyCost = 100 * SUPPLY_COST[Vessle.FIGHTER];
-      const fighterFuelCost = 100 * FUEL_COST[Vessle.FIGHTER];
       const transportSupplyCost = 150 * SUPPLY_COST[Vessle.M_TRANSPORT];
+      const fighterFuelCost = 100 * FUEL_COST[Vessle.FIGHTER];
       const transportFuelCost = 150 * FUEL_COST[Vessle.M_TRANSPORT];
+      const supplyShipFuelCost = 10 * FUEL_COST[Vessle.SUPPLY];
+      const fuelShipFuelCost = 10 * FUEL_COST[Vessle.FUEL];
       const distance = planet.distanceTo(destination);
 
       const expectedSupplyCost =
           Math.ceil((fighterSupplyCost + transportSupplyCost) * distance);
-      const expectedFuelCost =
-          Math.ceil((fighterFuelCost + transportFuelCost) * distance);
+      const expectedFuelCost = Math.ceil(
+          (fighterFuelCost + transportFuelCost + supplyShipFuelCost +
+           fuelShipFuelCost) *
+              distance,
+      );
 
       expect(fleet.calcSupplyCostTo(destination)).toEqual(expectedSupplyCost);
       expect(fleet.calcFuelCostTo(destination)).toEqual(expectedFuelCost);
     });
 
-    it('should move the fleet to destinatio when traveling', () => {
-      fleet.addSupply(10000);
-      fleet.addFuel(10000);
+    it('should move the fleet to destination when traveling', () => {
+      fleet.addResource(Resource.SUPPLY, 10000);
+      fleet.addResource(Resource.FUEL, 10000);
 
       fleet.travelTo(destination);
 
@@ -118,33 +126,35 @@ describe('Fleet', () => {
     });
 
     it('should deduct supplies and fuel on travel', () => {
-      fleet.addSupply(10000);
-      fleet.addFuel(10000);
+      fleet.addResource(Resource.SUPPLY, 10000);
+      fleet.addResource(Resource.FUEL, 10000);
       const supplyCost = fleet.calcSupplyCostTo(destination);
       const fuelCost = fleet.calcFuelCostTo(destination);
 
       fleet.travelTo(destination);
 
-      expect(fleet.supplies).toEqual(10000 - supplyCost);
-      expect(fleet.fuel).toEqual(10000 - fuelCost);
+      expect(fleet.getResource(Resource.SUPPLY)).toEqual(10000 - supplyCost);
+      expect(fleet.getResource(Resource.FUEL)).toEqual(10000 - fuelCost);
     });
 
     it('should refuse to travel without sufficient supplies', () => {
-      fleet.addSupply(0);
-      fleet.addFuel(10000);
+      fleet.addResource(Resource.SUPPLY, 0);
+      fleet.addResource(Resource.FUEL, 10000);
       const supplyCost = fleet.calcSupplyCostTo(destination);
 
       expect(() => fleet.travelTo(destination))
-          .toThrowError(new InsufficientResourceError('supply', 0, supplyCost));
+          .toThrowError(
+              new InsufficientResourceError(Resource.SUPPLY, 0, supplyCost));
     });
 
     it('should refuse to travel without sufficient fuel', () => {
-      fleet.addSupply(10000);
-      fleet.addFuel(0);
+      fleet.addResource(Resource.SUPPLY, 10000);
+      fleet.addResource(Resource.FUEL, 0);
       const fuelCost = fleet.calcFuelCostTo(destination);
 
       expect(() => fleet.travelTo(destination))
-          .toThrowError(new InsufficientResourceError('fuel', 0, fuelCost));
+          .toThrowError(
+              new InsufficientResourceError(Resource.FUEL, 0, fuelCost));
     });
 
     it.todo('should travel to new location after travel time');
@@ -153,12 +163,12 @@ describe('Fleet', () => {
   it('should calculate supply storage limit', () => {
     fleet.addShips(Vessle.SUPPLY, 2);
 
-    expect(fleet.supplyCapacity).toEqual(2000);
+    expect(fleet.getCapacity(Resource.SUPPLY)).toEqual(2000);
   });
 
   it('should calculate fuel storage limit', () => {
     fleet.addShips(Vessle.FUEL, 3);
 
-    expect(fleet.fuelCapacity).toEqual(3000);
+    expect(fleet.getCapacity(Resource.FUEL)).toEqual(3000);
   });
 });

@@ -54,7 +54,7 @@ export class Planet extends Positionable {
     const curRes = this.resources.get(Resource.SUPPLY) || 0;
     this.resources.set(Resource.SUPPLY, curRes - count);
     // TODO: Fix up the resource trading
-    fleet.addSupply(count);
+    fleet.addResource(Resource.SUPPLY, count);
   }
 
   /** TODO: Test this method */
@@ -62,7 +62,7 @@ export class Planet extends Positionable {
     const curRes = this.resources.get(Resource.FUEL) || 0;
     this.resources.set(Resource.FUEL, curRes - count);
     // TODO: Fix up the resource trading
-    fleet.addFuel(count);
+    fleet.addResource(Resource.FUEL, count);
   }
 
   /** Returns the number of the given vessle  */

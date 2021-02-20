@@ -1,4 +1,6 @@
+import {Resource} from '../data/industry';
 import {FUEL_COST, SUPPLY_COST} from '../data/travelCosts';
+import {Depot, InsufficientResourceError} from '../depot/depot';
 import {Planet} from '../planet/planet';
 import {StringToNumMapping} from '../types';
 import {Vessle} from './ship';
@@ -9,7 +11,7 @@ import {Vessle} from './ship';
  * player controls a fleet which moves from planet to planet. Most planets also
  * possess a defence fleet. Fleets can fight each other for control of a system.
  * */
-export class Fleet {
+export class Fleet extends Depot {
   private location: Planet;
   private state: FleetState = FleetState.ORBIT;
   /** Fleet is in statis until this Stardate */
@@ -19,6 +21,7 @@ export class Fleet {
   private _fuel = 0;
 
   constructor(planet: Planet) {
+    super();
     this.location = planet;
   }
 
@@ -65,19 +68,22 @@ export class Fleet {
 
   /** Moves the fleet to a distant planet */
   travelTo(dest: Planet): void {
+    const supplies = this.getResource(Resource.SUPPLY);
     const supplyCost = this.calcSupplyCostTo(dest);
+    const fuel = this.getResource(Resource.FUEL);
     const fuelCost = this.calcFuelCostTo(dest);
 
-    if (this.supplies < supplyCost) {
-      throw new InsufficientResourceError('supply', this.supplies, supplyCost);
+    if (supplies < supplyCost) {
+      throw new InsufficientResourceError(
+          Resource.SUPPLY, supplies, supplyCost);
     }
 
-    if (this.fuel < fuelCost) {
-      throw new InsufficientResourceError('fuel', this.fuel, fuelCost);
+    if (fuel < fuelCost) {
+      throw new InsufficientResourceError(Resource.FUEL, fuel, fuelCost);
     }
 
-    this.removeSupply(this.calcSupplyCostTo(dest));
-    this.removeFuel(this.calcFuelCostTo(dest));
+    this.removeResource(Resource.SUPPLY, this.calcSupplyCostTo(dest));
+    this.removeResource(Resource.FUEL, this.calcFuelCostTo(dest));
     this.location = dest;
     return;
   }
@@ -110,40 +116,19 @@ export class Fleet {
     return this.location;
   }
 
-  /** Total supply capacity of all ships in the fleet */
-  get supplyCapacity(): number {
-    return (this.ships.get(Vessle.SUPPLY) || 0) * 1000;
-  }
-
-  /** Total fuel capacity of all ships in the fleet */
-  get fuelCapacity(): number {
-    return (this.ships.get(Vessle.FUEL) || 0) * 1000;
-  }
-
-  /** Supplies carried by the fleet. */
-  get supplies(): number {
-    return this._supplies;
-  }
-
-  addSupply(supplies: number): void {
-    this._supplies += supplies;
-  }
-
-  removeSupply(supplies: number): void {
-    this._supplies -= supplies;
-  }
-
-  /** Fuel carried by the fleet. */
-  get fuel(): number {
-    return this._fuel;
-  }
-
-  addFuel(fuel: number): void {
-    this._fuel += fuel;
-  }
-
-  removeFuel(fuel: number): void {
-    this._fuel -= fuel;
+  /**
+   * Returns cargo capacity based on Cargo ships.
+   * @override
+   */
+  getCapacity(resource: Resource): number {
+    switch (resource) {
+      case Resource.SUPPLY:
+        return (this.ships.get(Vessle.SUPPLY) || 0) * 1000;
+      case Resource.FUEL:
+        return (this.ships.get(Vessle.FUEL) || 0) * 1000;
+      default:
+        return 0;
+    }
   }
 }
 
@@ -177,18 +162,5 @@ export class InvalidFleetLocationError extends Error {
   ) {
     super(`Cannot trade between fleets in different locations.`);
     this.name = 'InvalidFleetLocationError';
-  }
-}
-
-/** Error for attempting to travel without enough resources. */
-export class InsufficientResourceError extends Error {
-  constructor(
-      public readonly resource: string,
-      public readonly have: number,
-      public readonly need: number,
-  ) {
-    super(
-        `Insufficient ${resource}. Needs ${need} but fleet only has ${have}.`);
-    this.name = 'InsufficientResourceError';
   }
 }

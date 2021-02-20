@@ -4,6 +4,7 @@
  * other modules.
  */
 
+import {Resource} from '../data/industry';
 import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
 import {Builder} from '../testing/builder';
@@ -24,8 +25,8 @@ export class FleetBuilder implements Builder<Fleet> {
     this.ships.forEach((count: number, ship: Vessle) => {
       fleet.addShips(ship, count);
     });
-    fleet.addSupply(this.supplies);
-    fleet.addFuel(this.fuel);
+    fleet.addResource(Resource.SUPPLY, this.supplies);
+    fleet.addResource(Resource.FUEL, this.fuel);
     return fleet;
   }
 
