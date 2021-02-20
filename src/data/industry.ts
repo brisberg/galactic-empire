@@ -14,7 +14,7 @@ export enum Resource {
 
 /** Mapping of Resource constants to a number */
 export type ResourceMap = {
-  [res in Resource]: number;
+  [res in Resource]?: number;
 };
 
 /** Production rates of varous industries per million population assigned. */

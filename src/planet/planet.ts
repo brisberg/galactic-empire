@@ -86,13 +86,13 @@ export class Planet extends Positionable {
    */
   setIndustryAllocation(alloc: ResourceMap): void {
     const total = Object.values(alloc).reduce(
-        (sum: number, value: number) => sum + value, 0);
+        (sum: number, value: number|undefined) => sum + (value || 0), 0);
     if (total !== 100) {
       throw new InvalidIndustryAllocError(alloc);
     }
 
     for (const res of Object.values(Resource)) {
-      this.industry.set(res, alloc[res]);
+      this.industry.set(res, alloc[res] || 0);
     }
   }
 
@@ -101,7 +101,7 @@ export class Planet extends Positionable {
     this.industry.forEach((alloc: number, res: Resource) => {
       const activePop = this.population * (alloc / 100);
       const currentRes = this.resources.get(res) || 0;
-      const resProduced = activePop * PRODUCTION_RATE[res];
+      const resProduced = activePop * (PRODUCTION_RATE[res] || 1);
       this.resources.set(res, currentRes + resProduced);
     });
 
