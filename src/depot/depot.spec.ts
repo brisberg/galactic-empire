@@ -4,6 +4,7 @@ import {
   InsufficientResourceError,
   ResourceOverCapacityError,
 } from './depot';
+import {DepotBuilder} from './depot.mock';
 
 describe('Depot', () => {
   let depot: Depot;
@@ -29,14 +30,15 @@ describe('Depot', () => {
   });
 
   it('should throw an error when setting a Resource over capacity', () => {
-    depot.setCapacity(Resource.FUEL, 2000);
+    depot =
+        new DepotBuilder().withResourceCapacity(Resource.FUEL, 2000).build();
 
     expect(() => depot.setResource(Resource.FUEL, 2001))
         .toThrowError(new ResourceOverCapacityError(Resource.FUEL, 2001, 2000));
   });
 
   it('should add a Resource within capacity', () => {
-    depot.setResource(Resource.FUEL, 1000);
+    depot = new DepotBuilder().withResource(Resource.FUEL, 1000).build();
 
     depot.addResource(Resource.FUEL, 500);
 
@@ -44,15 +46,17 @@ describe('Depot', () => {
   });
 
   it('should throw an error when adding a Resource over capacity', () => {
-    depot.setCapacity(Resource.FUEL, 1200);
-    depot.setResource(Resource.FUEL, 1000);
+    depot = new DepotBuilder()
+                .withResourceCapacity(Resource.FUEL, 1200)
+                .withResource(Resource.FUEL, 1000)
+                .build();
 
     expect(() => depot.addResource(Resource.FUEL, 500))
         .toThrowError(new ResourceOverCapacityError(Resource.FUEL, 1500, 1200));
   });
 
   it('should remove a Resource', () => {
-    depot.setResource(Resource.FUEL, 1000);
+    depot = new DepotBuilder().withResource(Resource.FUEL, 1000).build();
 
     depot.removeResource(Resource.FUEL, 300);
 
@@ -60,15 +64,17 @@ describe('Depot', () => {
   });
 
   it('should throw an error when removing more resource than in Depot', () => {
-    depot.setResource(Resource.FUEL, 1000);
+    depot = new DepotBuilder().withResource(Resource.FUEL, 1000).build();
 
     expect(() => depot.removeResource(Resource.FUEL, 1100))
         .toThrowError(new InsufficientResourceError(Resource.FUEL, 1000, 1100));
   });
 
   it('should return all resources store in Depot', () => {
-    depot.setResource(Resource.FUEL, 1000);
-    depot.setResource(Resource.SUPPLY, 2000);
+    depot = new DepotBuilder()
+                .withResource(Resource.FUEL, 1000)
+                .withResource(Resource.SUPPLY, 2000)
+                .build();
 
     expect(depot.getAllResources())
         .toEqual({[Resource.FUEL]: 1000, [Resource.SUPPLY]: 2000});
