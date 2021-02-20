@@ -63,19 +63,19 @@ describe('Planet', () => {
                          })
                          .build();
       const expectedResources: ResourceMap = {
-        [Resource.CREDIT]:
-            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.CREDIT] || 1)),
-        [Resource.SUPPLY]:
-            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.SUPPLY] || 1)),
-        [Resource.FUEL]:
-            Math.floor(50 * 20 / 100 * (PRODUCTION_RATE[Resource.FUEL] || 1)),
+        [Resource.CREDIT]: Math.floor(
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.CREDIT] || 1) * 2),
+        [Resource.SUPPLY]: Math.floor(
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.SUPPLY] || 1) * 2),
+        [Resource.FUEL]: Math.floor(
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.FUEL] || 1) * 2),
         [Resource.MILITARY]: Math.floor(
-            50 * 20 / 100 * (PRODUCTION_RATE[Resource.MILITARY] || 1)),
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.MILITARY] || 1) * 2),
         [Resource.SHIPPARTS]: Math.floor(
-            50 * 20 / 100 * (PRODUCTION_RATE[Resource.SHIPPARTS] || 1)),
+            50 * 20 / 100 * (PRODUCTION_RATE[Resource.SHIPPARTS] || 1) * 2),
       };
 
-      planet.update(1);
+      planet.update(2);
 
       expect(planet.getResource(Resource.CREDIT))
           .toEqual(expectedResources[Resource.CREDIT]);

@@ -72,7 +72,7 @@ export class Planet extends PositionableDepot {
     // Produce resources for all industries
     this.industry.forEach((alloc: number, res: Resource) => {
       const activePop = this.population * (alloc / 100);
-      const product = activePop * (PRODUCTION_RATE[res] || 1);
+      const product = activePop * (PRODUCTION_RATE[res] || 1) * deltatime;
       this.addResource(res, product);
     });
 

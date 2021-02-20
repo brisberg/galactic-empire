@@ -126,6 +126,8 @@ export class Fleet extends Depot {
         return (this.ships.get(Vessle.SUPPLY) || 0) * 1000;
       case Resource.FUEL:
         return (this.ships.get(Vessle.FUEL) || 0) * 1000;
+      case Resource.CREDIT:
+        return Infinity;
       default:
         return 0;
     }

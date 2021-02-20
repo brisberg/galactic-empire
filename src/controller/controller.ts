@@ -35,8 +35,7 @@ export class PlayerController {
   }
 
   /** Purchase all of a resource from a planet for Credits. */
-  public purchaseResource(resource: Resource): void {
-    const amount = this.fleet.planet.getResource(resource);
+  public purchaseResource(resource: Resource, amount: number): void {
     this.fleet.removeResource(
         Resource.CREDIT, amount * (RESOURCE_COST[resource] || 0));
     this.fleet.planet.removeResource(resource, amount);

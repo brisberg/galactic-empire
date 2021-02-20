@@ -37,8 +37,6 @@ describe('Controller', () => {
     expect(fleet.planet).toBe(planets[1]);
   });
 
-  it.todo('should attack a planet');
-
   it('should collect taxes', () => {
     return;
   });
@@ -58,4 +56,6 @@ describe('Controller', () => {
   it.todo('should build ships');
 
   it.todo('should send spy satelites');
+
+  it.todo('should attack a planet');
 });

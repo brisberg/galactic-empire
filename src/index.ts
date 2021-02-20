@@ -1,4 +1,5 @@
 import {PlayerController} from './controller/controller';
+import {Resource} from './data/industry';
 import {Vessle} from './fleet/ship';
 import {Game} from './game/game';
 import {Allegience, Planet, TechLevel} from './planet/planet';
@@ -20,15 +21,28 @@ const game: Game = new Game(0, planets);
 
 const controller = new PlayerController(game);
 
+planets[0].setIndustryAllocation({
+  [Resource.CREDIT]: 40,
+  [Resource.SUPPLY]: 30,
+  [Resource.FUEL]: 30,
+});
+game.update(100);
 game.playerFleet.addShips(Vessle.FIGHTER, 100);
+game.playerFleet.addShips(Vessle.SUPPLY, 1);
+game.playerFleet.addShips(Vessle.FUEL, 1);
 console.log(game.playerFleet.planet);
-controller.purchaseSupplies();
-console.log(game.playerFleet.supplies);
-controller.purchaseFuel();
-console.log(game.playerFleet.fuel);
+controller.collectTaxes();
+console.log(game.playerFleet.planet);
+console.log(game.playerFleet.getResource(Resource.CREDIT));
+controller.purchaseResource(Resource.SUPPLY, 1000);
+console.log(game.playerFleet.getResource(Resource.CREDIT));
+console.log(game.playerFleet.getResource(Resource.SUPPLY));
+controller.purchaseResource(Resource.FUEL, 1000);
+console.log(game.playerFleet.getResource(Resource.CREDIT));
+console.log(game.playerFleet.getResource(Resource.FUEL));
 console.log(game.playerFleet.calcSupplyCostTo(planets[1]));
 console.log(game.playerFleet.calcFuelCostTo(planets[1]));
 controller.embark(planets[1]);
 console.log(game.playerFleet.planet);
-console.log(game.playerFleet.supplies);
-console.log(game.playerFleet.fuel);
+console.log(game.playerFleet.getResource(Resource.SUPPLY));
+console.log(game.playerFleet.getResource(Resource.FUEL));
