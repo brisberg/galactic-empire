@@ -1,4 +1,4 @@
-import {Resource, RESOURCE_COST} from '../data/industry';
+import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
 import {Game} from '../game/game';
 import {Planet} from '../planet/planet';
@@ -46,5 +46,11 @@ export class PlayerController {
   /** Wait for the specified amount of time. Moves the simulation forward. */
   public waitInStatis(waitTime: number): void {
     this.game.update(waitTime);
+  }
+
+  /** Update the industry allocation of the current Planet. */
+  public setIndustryAllocation(alloc: ResourceMap): void {
+    this.fleet.planet.setIndustryAllocation(alloc);
+    this.game.update(0.5);
   }
 }

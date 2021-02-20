@@ -1,10 +1,11 @@
-import {Resource, RESOURCE_COST} from '../data/industry';
+import {Resource, RESOURCE_COST, ResourceMap} from '../data/industry';
 import {Fleet} from '../fleet/fleet';
 import {Vessle} from '../fleet/ship';
 import {Game} from '../game/game';
 import {Allegience, Planet, TechLevel} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
 import {Position} from '../position/position';
+
 import {PlayerController} from './controller';
 
 describe('Controller', () => {
@@ -81,7 +82,24 @@ describe('Controller', () => {
     expect(game.stardate).toEqual(100);
   });
 
-  it.todo('should re-allocate a planet');
+  it('should re-allocate industry on a planet', () => {
+    fleet.planet.setIndustryAllocation({[Resource.CREDIT]: 100});
+    const newAllocation: ResourceMap = {
+      [Resource.CREDIT]: 50,
+      [Resource.SUPPLY]: 50,
+    };
+
+    controller.setIndustryAllocation(newAllocation);
+
+    const expectedAlloc: ResourceMap = {
+      [Resource.CREDIT]: 50,
+      [Resource.SUPPLY]: 50,
+      [Resource.FUEL]: 0,
+      [Resource.MILITARY]: 0,
+      [Resource.SHIPPARTS]: 0,
+    };
+    expect(fleet.planet.getIndustryAllocation()).toEqual(expectedAlloc);
+  });
 
   it.todo('should build ships');
 
