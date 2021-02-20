@@ -44,6 +44,11 @@ export class Planet extends Positionable {
     return this.resources.get(resource) || 0;
   }
 
+  /** Adds the amount of the given Resource to the Planet */
+  addResource(resource: Resource, amount: number): void {
+    this.resources.set(resource, this.getResource(resource) + amount);
+  }
+
   /** TODO: Test this method */
   transferSupplies(count: number, fleet: Fleet): void {
     const curRes = this.resources.get(Resource.SUPPLY) || 0;

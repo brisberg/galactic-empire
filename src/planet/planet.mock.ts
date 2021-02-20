@@ -27,13 +27,16 @@ export class PlanetBuilder implements Builder<Planet> {
   // private fleet: Map<Vessle, number> = new Map();
   /** Mapping of Resource generating industry to an allocation percentage */
   private industry: ResourceMap = DEFAULT_INDUSTRY_ALLOC;
-  // private resources: Map<Resource, number> = new Map();
+  private resources: Map<Resource, number> = new Map();
 
   public build(): Planet {
     const planet = new Planet(
         this.name, this.position, this.allegience, this.techlevel,
         this.population);
     planet.setIndustryAllocation(this.industry);
+    this.resources.forEach((amount: number, res: Resource) => {
+      planet.addResource(res, amount);
+    });
     return planet;
   }
 
@@ -64,6 +67,11 @@ export class PlanetBuilder implements Builder<Planet> {
 
   public withIndustryAlloc(alloc: ResourceMap): this {
     this.industry = alloc;
+    return this;
+  }
+
+  public withResource(resource: Resource, amount: number): this {
+    this.resources.set(resource, amount);
     return this;
   }
 }
