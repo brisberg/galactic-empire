@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(30, 20px);
+  grid-template-rows: repeat(30, 20px);
+  width: 600px;
+  height: 600px;
+}
+
+.map-grid {
+  background-color: black;
+}
+
+.border {
+  border: 3px solid purple;
+}
+
+.planet {
+  background-color: greenyellow;
+}
+
+.planet:hover {
+  background-color: brown;
+}
