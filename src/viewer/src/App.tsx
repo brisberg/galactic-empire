@@ -19,6 +19,11 @@ function App() {
           Learn React
         </a>
       </header>
+      <div className="grid">
+        <div style={{gridColumnStart: 3,gridRowStart:3}}></div>
+        <div style={{gridColumnStart: 5,gridRowStart:8}}></div>
+        <div style={{gridColumnStart: 12,gridRowStart:2}}></div>
+      </div>
     </div>
   );
 }
