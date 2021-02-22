@@ -15,9 +15,18 @@
 }
 
 .planet {
-  background-color: greenyellow;
+  border: 1px solid blue;
+  border-radius: 10px;
 }
 
 .planet:hover {
   background-color: brown;
+}
+
+.Empire {
+  background-color: greenyellow;
+}
+
+.Independent {
+  background-color: blue;
 }

@@ -11,24 +11,26 @@ export default function App() {
     fighters: 160, transports: 100, mTransports: 50,
   }
 
-  const planet: Planet = {
-    name: 'Galactica',
-    techlevel: 'Advanced',
-    status: 'Empire',
-    population: 50.5,
-    position: { x: 15, y: 15 },
-  };
-
-  const planets = [
-    { x: 3, y: 5 }, { x: 11, y: 2 }, { x: 24, y: 8 }, { x: 29, y: 24 }, { x: 7, y: 15 },
-    { x: 11, y: 21 }, { x: 18, y: 13 }, { x: 3, y: 21 }, { x: 6, y: 28 }, { x: 9, y: 18 },
+  const planets: Planet[] = [
+    { name: 'Galactica', techlevel: 'Advanced', status: 'Empire', population: 50.5, position: { x: 15, y: 15 } },
+    { name: 'Winterstone', techlevel: 'Advanced', status: 'Empire', population: 100.5, position: { x: 3, y: 5 } },
+    { name: 'Vorex', techlevel: 'Advanced', status: 'Independent', population: 95.5, position: { x: 11, y: 2 } },
+    { name: 'Jakle', techlevel: 'Superior', status: 'Empire', population: 34.5, position: { x: 24, y: 8 } },
+    { name: 'Bol', techlevel: 'Superior', status: 'Independent', population: 78.5, position: { x: 29, y: 24 } },
+    { name: 'Ros\' kel', techlevel: 'Superior', status: 'Independent', population: 23.5, position: { x: 7, y: 15 } },
+    { name: 'Spurn', techlevel: 'Limited', status: 'Empire', population: 41.5, position: { x: 11, y: 21 } },
+    { name: 'Halifax', techlevel: 'Limited', status: 'Empire', population: 101.5, position: { x: 18, y: 13 } },
+    { name: 'Xil\'kar', techlevel: 'Limited', status: 'Independent', population: 110.5, position: { x: 3, y: 21 } },
+    { name: 'Terranova', techlevel: 'Limited', status: 'Independent', population: 83.5, position: { x: 6, y: 28 } },
+    { name: 'Eventide', techlevel: 'Primitive', status: 'Independent', population: 25.5, position: { x: 9, y: 18 } },
+    { name: 'Pak', techlevel: 'Primitive', status: 'Independent', population: 15.5, position: { x: 14, y: 9 } },
   ];
 
   return (
     <div className="App">
       <MapGrid planets={planets} />
       <div>
-        <PlanetStatus planet={planet} />
+        <PlanetStatus planet={planets[0]} />
         <FleetStatus fleet={fleet} />
       </div>
     </div>
