@@ -1,12 +1,6 @@
-/** Temporary fleet structure. */
-export interface Planet {
-  name: string;
-  techlevel: string;
-  status: string;
-  population: number;
-  position: { x: number, y: number };
-}
+import { Planet } from "../engine/planet/planet";
 
+/** Information Display panel for the currently selected Planet */
 export default function PlanetStatus({ planet }: { planet: Planet }): JSX.Element {
   return (
     <div className="planet-status-panel">
@@ -14,7 +8,7 @@ export default function PlanetStatus({ planet }: { planet: Planet }): JSX.Elemen
       <ul>
         <li>Name: {planet.name}</li>
         <li>Technology: {planet.techlevel}</li>
-        <li>Status: {planet.status}</li>
+        <li>Status: {planet.allegience}</li>
         <li>Population: {planet.population}</li>
       </ul>
     </div>

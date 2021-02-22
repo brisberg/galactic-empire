@@ -4,7 +4,7 @@
  * other modules.
  */
 
-import {Builder} from '../../testing/builder';
+import {Builder} from '../builder';
 import {Resource, ResourceMap} from '../data/industry';
 import {Position} from '../position/position';
 

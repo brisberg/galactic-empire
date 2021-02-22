@@ -1,10 +1,10 @@
-import {PlayerController} from './engine/controller/controller';
-import {initialFleet} from './engine/data/fleet';
-import {Resource} from './engine/data/industry';
-import {Vessle} from './engine/fleet/ship';
-import {Game} from './engine/game/game';
-import {Allegience, Planet, TechLevel} from './engine/planet/planet';
-import {Position} from './engine/position/position';
+import {PlayerController} from './controller/controller';
+import {initialFleet} from './data/fleet';
+import {Resource} from './data/industry';
+import {Vessle} from './fleet/ship';
+import {Game} from './game/game';
+import {Allegience, Planet, TechLevel} from './planet/planet';
+import {Position} from './position/position';
 
 const planets: Planet[] = [
   new Planet(

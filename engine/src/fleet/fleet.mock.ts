@@ -4,7 +4,7 @@
  * other modules.
  */
 
-import {Builder} from '../../testing/builder';
+import {Builder} from '../builder';
 import {Resource} from '../data/industry';
 import {Planet} from '../planet/planet';
 import {PlanetBuilder} from '../planet/planet.mock';
