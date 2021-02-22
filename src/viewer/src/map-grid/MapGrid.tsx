@@ -1,16 +1,22 @@
 import './MapGrid.css';
 
-function MapGrid() {
+/** Renders a spacial grid describing the game Map. Renders in planets and points of interest for selection. */
+export default function MapGrid({planets}: {planets: {x: number, y: number}[]}): JSX.Element {
+
+  const gridItems = [];
+
+  for (const planet of planets) {
+    gridItems.push(GridItem(planet.x, planet.y));
+  }
+
   return (
     <div className="grid border map-grid">
-      <div className="planet" style={{gridColumnStart: 3,gridRowStart:3}}></div>
-      <div className="planet" style={{gridColumnStart: 5,gridRowStart:8}}></div>
-      <div className="planet" style={{gridColumnStart: 12,gridRowStart:2}}></div>
-      <div className="planet" style={{gridColumnStart: 28,gridRowStart:28}}></div>
-      <div className="planet" style={{gridColumnStart: 19,gridRowStart:12}}></div>
-      <div className="planet" style={{gridColumnStart: 21,gridRowStart:10}}></div>
+      {gridItems}
     </div>
   );
 }
 
-export default MapGrid;
+/** Renders a single map element. */
+function GridItem(x: number, y: number): JSX.Element {
+  return (<div className="planet" style={{gridColumnStart: x,gridRowStart: y}}></div>)
+}
