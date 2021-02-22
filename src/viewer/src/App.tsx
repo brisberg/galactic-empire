@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import FleetStatus, { Fleet } from './fleet-status/FleetStatus';
 import MapGrid from './map-grid/MapGrid';
@@ -6,6 +6,7 @@ import PlanetStatus, { Planet } from './planet-status/PlanetStatus';
 
 /** Main App Component */
 export default function App() {
+
   const fleet: Fleet = {
     credits: 10000, supply: 2983, supplyMax: 3000, fuel: 1732, fuelMax: 2000,
     fighters: 160, transports: 100, mTransports: 50,
@@ -26,11 +27,13 @@ export default function App() {
     { name: 'Pak', techlevel: 'Primitive', status: 'Independent', population: 15.5, position: { x: 14, y: 9 } },
   ];
 
+  const [planet, setPlanet] = useState(planets[0])
+
   return (
     <div className="App">
-      <MapGrid planets={planets} />
+      <MapGrid planets={planets} onSelectPlanet={setPlanet} />
       <div>
-        <PlanetStatus planet={planets[0]} />
+        <PlanetStatus planet={planet} />
         <FleetStatus fleet={fleet} />
       </div>
     </div>
