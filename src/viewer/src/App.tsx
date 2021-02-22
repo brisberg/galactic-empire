@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ActionsPanel, { PlayerController } from './actions-panel/ActionsPanel';
 import './App.css';
 import FleetStatus, { Fleet } from './fleet-status/FleetStatus';
 import MapGrid from './map-grid/MapGrid';
@@ -27,7 +28,14 @@ export default function App() {
     { name: 'Pak', techlevel: 'Primitive', status: 'Independent', population: 15.5, position: { x: 14, y: 9 } },
   ];
 
-  const [planet, setPlanet] = useState(planets[0])
+  const controller: PlayerController = {
+    embark: () => console.log('embark'),
+    collectTaxes: () => console.log('collectTaxes'),
+    purchaseSupplies: () => console.log('purchaseSupplies'),
+    purchaseFuel: () => console.log('purchaseFuel'),
+  }
+
+  const [planet, setPlanet] = useState(planets[0]);
 
   return (
     <div className="App">
@@ -35,6 +43,7 @@ export default function App() {
       <div>
         <PlanetStatus planet={planet} />
         <FleetStatus fleet={fleet} />
+        <ActionsPanel fleet={fleet} planet={planet} controller={controller} />
       </div>
     </div>
   );
