@@ -10,21 +10,23 @@ import { game, controller } from './game';
 export default function App() {
   const [planet, setPlanet] = useState(game.playerFleet.planet);
 
-  const [sim, updateSim] = useState(game);
-
-  const update = () => {
-    updateSim(sim);
-  };
+  const update = useForceUpdate();
 
   return (
     <div className="App">
-      <MapGrid planets={sim.getAllPlanets()} onSelectPlanet={setPlanet} />
+      <MapGrid planets={game.getAllPlanets()} onSelectPlanet={setPlanet} />
       <div>
-        StarDate: {sim.stardate}
+        StarDate: {game.stardate}
         <PlanetStatus planet={planet} />
-        <FleetStatus fleet={sim.playerFleet} />
-        <ActionsPanel fleet={sim.playerFleet} planet={planet} controller={controller} onUpdate={update} />
+        <FleetStatus fleet={game.playerFleet} />
+        <ActionsPanel fleet={game.playerFleet} planet={planet} controller={controller} onUpdate={update} />
       </div>
     </div>
   );
+}
+
+/** Custom React Hook to trigger a re-render of the component */
+function useForceUpdate() {
+  const [, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
 }
