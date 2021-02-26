@@ -1,9 +1,18 @@
 // Galactic Emprie Game
 import {PlayerController} from './engine/controller/controller';
 import {initialFleet} from './engine/data/fleet';
+import {Resource, ResourceMap} from './engine/data/industry';
 import {Game} from './engine/game/game';
 import {Allegience, Planet, TechLevel} from './engine/planet/planet';
 import {Position} from './engine/position/position';
+
+const ADVANCED_INDUSTRY: ResourceMap = {
+  [Resource.CREDIT]: 20,
+  [Resource.SUPPLY]: 20,
+  [Resource.FUEL]: 20,
+  [Resource.MILITARY]: 20,
+  [Resource.SHIPPARTS]: 20,
+}
 
 const planets: Planet[] = [
   new Planet(
@@ -43,6 +52,10 @@ const planets: Planet[] = [
       'Pak', new Position(14, 9), Allegience.INDEPENDENT, TechLevel.PRIMITIVE,
       15.5),
 ];
+
+planets.forEach((planet: Planet) => {
+  planet.setIndustryAllocation(ADVANCED_INDUSTRY);
+});
 
 export const game = new Game(0, planets, initialFleet);
 export const controller = new PlayerController(game);
